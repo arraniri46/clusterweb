@@ -1,0 +1,27 @@
+{% load static %}
+{% include 'base/leaflet.html' %}
+
+
+<div class="container shadow" id="clusterMap" style="height: 550px; width: 900px; float: left; padding: 10px 10px 10px 10px;">
+
+</div>
+            
+       
+
+<script src="{%static "geojson/12345.geojson" %}"></script>
+<script>
+    const mymap = L.map('clusterMap').setView([3.59, 98.67], 7);
+
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const tiles = L.tileLayer(tileURL, {attribution});
+
+    //marker.bindTooltip("my tooltip text").openTooltip();
+
+    tiles.addTo(mymap);
+    const indokab = L.geoJson(test).addTo(mymap);
+
+</script>
+{% include 'base/js.html' %}
+
+

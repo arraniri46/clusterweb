@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    {% include 'base/js.html' %}
+    {% include 'base/css.html' %}
+</head>
+<body>
+    <!-- Bootstrap NavBar -->
+<nav class="navbar navbar-expand-md bg-dark bg-primary">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#" style="color: azure;">
+        <!-- <img src="url" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+        <span class="fa fa-question fa-fw mr-3"></span>
+        <span class="menu-collapsed">SKRIPSI</span>
+    </a>
+    
+</nav>
+<!-- NavBar END -->
+<!-- Bootstrap row -->
+<div class="row" id="body-row">
+    <!-- Sidebar -->
+    <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+        <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+        <!-- Bootstrap List Group -->
+        <ul class="list-group">
+            <!-- Separator with title -->
+            <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                <small>MAIN MENU</small>
+            </li>
+            <!-- /END Separator -->
+            <!-- Menu with submenu -->
+            <a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-dashboard fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Home</span>
+                </div>
+            </a>
+            
+            <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-file fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Upload File</span>
+                </div>
+            </a>
+            
+            <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-tasks fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Etc..</span>
+                </div>
+            </a>
+            <!-- Separator with title -->
+            <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                <small>STATISTIK</small>
+            </li>
+            <!-- /END Separator -->
+            <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-sun fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Kendaraan</span>
+                </div>
+            </a>
+            <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-vendor fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Vendor</span>
+                </div>
+            </a>
+            <!-- Separator without title -->
+            <!-- <li class="list-group-item sidebar-separator menu-collapsed"></li> -->
+            <!-- /END Separator -->
+            <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-question fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Pekerjaan</span>
+                </div>
+            </a>
+        </ul><!-- List Group END-->
+    </div><!-- sidebar-container END -->
+    <!-- MAIN -->
+    <div class="col p-5">
+        <!-- <h1 class="display-4"><b>Dashboard</b></h1> -->
+        <div class="alert alert-success alert-dismissable fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 class="alert-heading">Success!</h2>
+            <h6>Proses telah selesai.</h6>
+        </div>
+        <div class="container-fluid bg-white shadow rounded" style="height: 550px;">
+            <div class="card-deck-wrapper">
+                <div class="card-deck py-5">
+                    <div class="card shadow mx-4">
+                    <img src="{% static "img/mapping.png" %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h3 class="card-title">Mapping</h3>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                    </div>
+                    <div class="card shadow mx-4">
+                    <img src="{% static "img/chart.png" %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h3 class="card-title">Chart</h3>
+                        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                    </div>
+                    <div class="card shadow mx-4">
+                    <img src="{% static "img/table.png" %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h3 class="card-title">Table</h3>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main Col END -->
+</div><!-- body-row END -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+</body>
+</html>

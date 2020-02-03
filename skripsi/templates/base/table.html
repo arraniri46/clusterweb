@@ -1,0 +1,71 @@
+<link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+
+<div class="mt-5" style="margin-left: 200px;">
+   <h3>Table</h3> 
+</div>
+        <div class="container toolbar col-sm-2" style="margin-left: 200px;";>
+            <select class="form-control" id="locale">
+            <option value="af-ZA">af-ZA</option>
+            <option value="ar-SA">ar-SA</option>
+            <option value="ca-ES">ca-ES</option>
+            <option value="cs-CZ">cs-CZ</option>
+            <option value="da-DK">da-DK</option>
+            <option value="de-DE">de-DE</option>
+            </select>
+        </div>
+        <div class="container col-sm-10 px-5 table-responsive">
+            <table class="table mt-5" 
+                data-toggle="table"
+                data-search="true"
+                data-show-refresh="true"
+                data-pagination="true"
+                data-side-pagination="server">
+                <caption>Hasil clustering</caption>
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Kabupaten</th>
+                    <th scope="col">Pekerjaan</th>
+                    <th scope="col">Objek Kendaraan</th>
+                    <th scope="col">Harga Kendaraan</th>
+                    <th scope="col">Tenor</th>
+                    <th scope="col">Kolektibilitas</th>
+                    <th scope="col">Cluster</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>Mark</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        

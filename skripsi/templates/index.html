@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/bootstrap.css" %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow">
+    <a class="navbar-brand" href="#">SKRIPSI</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+    <div class="container-sm">
+      <h2 style="text-align: center; margin-top: 50px;">
+        IMPLEMENTASI ALGORITMA K-PROTOTYPE DALAM SEGMENTASI PASAR KENDARAAN BERMOTOR TERHADAP KARAKTERISTIK KREDIT BERDASARKAN DATA 
+        CUSTOMER LEASING
+      </h2>
+    </div>
+
+    <div class="container-fluid row justify-content-center align-items-center">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group mb-3" style="width: 400px; margin-top: 100px;">
+          <div class="input-group-prepend">
+            <button class="btn btn-primary" type="submit" id="inputGroupFileAddon03" >Upload</button>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="document">
+            <label class="custom-file-label" for="inputGroupFile03">Choose file...</label>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    
+
+    <footer class="page-footer fixed-bottom">
+      <div class="card text-center">
+        <div class="card-header">Teknologi Informasi</div>
+        <div class="card-body">
+          <h5 class="card-title">Universitas Sumatera Utara</h5>
+          <h6 class="card-text">2020</h6>
+        </div>
+      </div>
+    </footer>
+
+</body>
+</html>
