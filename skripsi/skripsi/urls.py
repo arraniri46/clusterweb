@@ -31,6 +31,7 @@ urlpatterns = [
     path('result/', views.result),
     path('upload/', views.upload, name='upload'),
     path('example/', views.example),
+    path('data-json/', views.dataJson, name='data-json'),
 ]
 
 if settings.DEBUG:

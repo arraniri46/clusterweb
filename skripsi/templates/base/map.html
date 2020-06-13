@@ -1,27 +1,160 @@
 {% load static %}
 {% include 'base/leaflet.html' %}
 
+<style>
+    .info { 
+        padding: 6px 8px; 
+        font: 14px/16px Arial, Helvetica, sans-serif; 
+        background: white; 
+        background: rgba(255,255,255,0.8); 
+        box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+        border-radius: 5px; 
+    } 
+    .info h4 { 
+        margin: 0 0 5px; 
+        color: #777; 
+    }
+    .legend {
+        line-height: 18px;
+        color: #555;
+    }
+    .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
 
-<div class="container shadow" id="clusterMap" style="height: 550px; width: 900px; float: left; padding: 10px 10px 10px 10px;">
+    /* .leaflet-tile-pane {
+         -webkit-filter: grayscale(100%);
+         filter: grayscale(100%);
+    } */
+</style>
+<div class="container shadow" id="clusterMap" style="height: 500px; width: 100%; float: left; padding: 10px 10px 10px 10px;">
 
 </div>
             
        
 
-<script src="{%static "geojson/12345.geojson" %}"></script>
+<script src="{%static "geojson/sumatera-utara.geojson" %}"></script>
 <script>
-    const mymap = L.map('clusterMap').setView([3.59, 98.67], 7);
+    const mapSumut = L.map('clusterMap',{ fadeAnimation: false }).setView([2.5, 99], 7);
 
-    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>';
     const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const tiles = L.tileLayer(tileURL, {attribution});
 
     //marker.bindTooltip("my tooltip text").openTooltip();
 
-    tiles.addTo(mymap);
-    const indokab = L.geoJson(test).addTo(mymap);
+    tiles.addTo(mapSumut);
+    //const indokab = L.geoJson(sumateraUtara).addTo(mymap);
+
+    // control that shows state info on hover
+	var info = L.control();
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+    };
+
+    info.update = function (props) {
+        this._div.innerHTML = '<h4><b>Cluster Sumatera Utara</b></h4>' +  (props ?
+            '<b>' + props.kabkot + '</b><br />' + props.cartodb_id + ' cluster / mi<sup>2</sup>'
+            : 'Hover over a state');
+    };
+
+    info.addTo(mapSumut);
+
+    function getColor(d) {
+        return  d > 60 ? '#800026' :
+                d > 55  ? '#BD0026' :
+                d > 50  ? '#E31A1C' :
+                d > 40  ? '#FC4E2A' :
+                d > 30   ? '#FD8D3C' :
+                d > 25   ? '#FEB24C' :
+                d > 20   ? '#FED976' :
+                            '#FFEDA0';
+    }
+
+    function style(feature) {
+        return {
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '2',
+            fillOpacity: 0.7,
+            fillColor: getColor(feature.properties.cartodb_id),
+        };
+    }
+
+    //var sumut = L.geoJson(sumateraUtara, {style: style}).addTo(mapSumut);
+
+    function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+    }
+
+    var geojson;
+
+    function resetHighlight(e) {
+        geojson.resetStyle(e.target);
+    }
+
+    function zoomToFeature(e) {
+		mapSumut.fitBounds(e.target.getBounds());
+	}
+
+    function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature
+		});
+	}
+
+    geojson = L.geoJson(sumateraUtara, {
+		style: style,
+		onEachFeature: onEachFeature
+	}).addTo(mapSumut);
+
+    mapSumut.attributionControl.addAttribution('Kabupaten ID &copy; <a href="https://www.sumutprov.go.id/">Sumatera Utara</a>');
+
+    var legend = L.control({position: 'bottomright'});
+
+	legend.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [20, 25, 30, 40, 45, 50, 55, 60],
+			labels = [],
+			from, to;
+
+		for (var i = 0; i < grades.length; i++) {
+			from = grades[i];
+			to = grades[i + 1];
+
+			labels.push(
+				'<i style="background:' + getColor(from + 1) + '"></i> ' +
+				from + (to ? '&ndash;' + to : '+'));
+		}
+
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+
+	legend.addTo(mapSumut);
 
 </script>
 {% include 'base/js.html' %}
-
-

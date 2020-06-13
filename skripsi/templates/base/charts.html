@@ -1,34 +1,95 @@
-<div class="chart-container shadow" style="float: right; width: 45%; height: 400px; margin-left: 150px; display: inline-table;">
-    <canvas id="myChart" width="600px" height="400px"></canvas>
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5 mg-t-10">
+        <div class="card mb-5">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik Clustering</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Cluster</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                    <canvas id="chart-1"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-5 mg-t-10">
+        <div class="card mb-5">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Objek Kendaraan</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                    <canvas id="chart-2"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="col-md-6 col-lg-5 mg-t-10">
+        <div class="card mb-5">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Pekerjaan</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                    <canvas id="chart-3"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-5 mg-t-10">
+        <div class="card mb-5">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Tenor</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                    <canvas id="chart-4"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>   
+
+    <div class="col-md-8">
+        <div class="card mb-5">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik Gabungan</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Gabungan Terhadap Cluster</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container shadow" style="width: 100%; height: 600px;">
+                    <canvas id="chart-5"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
     
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    var ctx = document.getElementById('chart-1').getContext('2d');
+    var configBar = {
         type: 'bar',
-        maintainAspectRatio : false,
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: {{labelCluster | safe}},
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
+                label: 'Clusters',
+                data: {{dataCluster | safe}},
+                backgroundColor: '#007bff',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
             }]
         },
         options: {
@@ -37,10 +98,242 @@
                     ticks: {
                         beginAtZero: true
                     }
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function(label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        }else{
+                            return label;
+                        }              
+                        }
+                    }
                 }]
-            }
+            },
+            responsive : true,
+            maintainAspectRatio : false
         }
-    });
+    }
+    var myChart = new Chart(ctx, configBar);
 
-    myChart.canvas.parentNode.style.height = '400px';
+    //myChart.canvas.parentNode.style.height = '400px';
+</script>
+
+<script>    
+    var ctx = document.getElementById('chart-2').getContext('2d');
+    var configBar = {
+        type: 'bar',
+        data: {
+            labels: {{labelKendaraan | safe}},
+            datasets: [{
+                label: 'Kendaraan',
+                data: {{dataKendaraan | safe}},
+                backgroundColor: '#007bff',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function(label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        }else{
+                            return label;
+                        }              
+                        }
+                    }
+                }]
+            },
+            responsive : true,
+            maintainAspectRatio : false
+        }
+    }
+    var myChart = new Chart(ctx, configBar);
+
+    //myChart.canvas.parentNode.style.height = '400px';
+</script>
+
+<script>
+    var ctx = document.getElementById('chart-3').getContext('2d');
+    var configBar = {
+        type: 'bar',
+        data: {
+            labels: {{labelPekerjaan | safe}},
+            datasets: [{
+                label: 'Total Pekerjaan',
+                data: {{dataPekerjaan | safe}},
+                backgroundColor: '#007bff',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function(label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        }else{
+                            return label;
+                        }              
+                        }
+                    }
+                }]
+            },
+            responsive : true,
+            maintainAspectRatio : false
+        }
+    }
+    var myChart = new Chart(ctx, configBar);
+
+
+    //myChart.canvas.parentNode.style.height = '400px';
+</script>
+
+<script>
+    var ctx = document.getElementById('chart-4').getContext('2d');
+    var configBar = {
+        type: 'bar',
+        data: {
+            labels: {{labelTenor | safe}},
+            datasets: [{
+                label: 'Tenor',
+                data: {{dataTenor | safe}},
+                backgroundColor: '#007bff',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function(label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        }else{
+                            return label;
+                        }              
+                        }
+                    }
+                }]
+            },
+            responsive : true,
+            maintainAspectRatio : false
+        }
+    }
+    var myChart = new Chart(ctx, configBar);
+
+
+    //myChart.canvas.parentNode.style.height = '400px';
+</script>
+
+<script>
+    var randomScalingFactor = function() {
+			return Math.round(Math.random() * 100);
+        };
+        
+    var barChartData = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+            label: 'Kendaraan',
+            backgroundColor: '#ff1744',
+            stack: 'Stack 0',
+            data: [
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor()
+            ]
+        }, {
+            label: 'Pekerjaan',
+            backgroundColor: '#2979ff',
+            stack: 'Stack 1',
+            data: [
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor()
+            ]
+        }, {
+            label: 'Tenor',
+            backgroundColor: '#00e676',
+            stack: 'Stack 2',
+            data: [
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor()
+            ]
+        }]
+
+    };
+    window.onload = function() {
+        var ctx = document.getElementById('chart-5').getContext('2d');
+        window.myBar = new Chart(ctx, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Chart.js Bar Chart - Stacked'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                responsive: true,
+                maintainAspectRatio : false,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
+        });
+    };
+
+    // document.getElementById('randomizeData').addEventListener('click', function() {
+    //     barChartData.datasets.forEach(function(dataset) {
+    //         dataset.data = dataset.data.map(function() {
+    //             return randomScalingFactor();
+    //         });
+    //     });
+    //     window.myBar.update();
+    // });
 </script>

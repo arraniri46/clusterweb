@@ -1,0 +1,75 @@
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" /> -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+
+<div class="container col-md-10 table-responsive">
+    <table id="table-data" class="table table-hover table-bordered">
+        <caption>Hasil clustering</caption>
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>KABUPATEN</th>
+                <th>PEKERJAAN</th>
+                <th>OBJECT</th>
+                <th>TENOR</th>
+                <th>STATUS BAYAR</th>
+                <th>OTR</th>
+                <th>Custer</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for i in data %}
+
+                <tr >
+                    <td>{{ i.ID }}</td>
+                    <td>{{ i.KABUPATEN }}</td>
+                    <td>{{ i.PEKERJAAN }}</td>
+                    <td>{{ i.OBJECT }}</td>
+                    <td>{{ i.TENOR }}</td>
+                    <td>{{ i.STATUS }}</td>
+                    <td>{{ i.OTR }}</td>
+                    <td>{{ i.cluster }}</td>
+                </tr>
+                
+            {% endfor %}
+        </tbody>
+            
+    </table>
+</div>
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+    $('#table-data').DataTable({
+        // "processing": true,
+        // "serverSide": true,
+        // "ajax": "http://127.0.0.1:8000/data-json", 
+        // deferRender:    true,
+        // scrollY:        400,
+        // scrollCollapse: true,
+        // scroller:       true,
+        // "columnDefs" : [{
+        //     "defaultContent": "-",
+        // }],
+
+        // "columns": [
+        //     { "data": "ID" },
+        //     { "data": "KABUPATEN" },
+        //     { "data": "PEKERJAAN" },
+        //     { "data": "OBJECT" },
+        //     { "data": "TENOR" },
+        //     { "data": "STATUS BAYAR" },
+            
+        // ]
+    });
+    
+} );
+</script>
+{% endblock js %}
+    
