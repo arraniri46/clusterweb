@@ -31,21 +31,37 @@
          filter: grayscale(100%);
     } */
 </style>
-<div class="container shadow" id="clusterMap" style="height: 500px; width: 100%; float: left; padding: 10px 10px 10px 10px;">
+<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.fullscreen/dist/leaflet.fullscreen.css">
+<div class="container shadow-lg" id="clusterMap" style="height: 500px; width: 100%; float: left; padding: 10px 10px 10px 10px;">
 
 </div>
             
        
 
+{% block js %}    
+
 <script src="{%static "geojson/sumatera-utara.geojson" %}"></script>
+<script src="https://leaflet.github.io/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js"></script>
 <script>
-    const mapSumut = L.map('clusterMap',{ fadeAnimation: false }).setView([2.5, 99], 7);
 
     const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>';
     const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const tiles = L.tileLayer(tileURL, {attribution});
 
-    //marker.bindTooltip("my tooltip text").openTooltip();
+    // var grayscale   = L.tileLayer(tileURL, {id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: attribution}),
+	// 	streets  = L.tileLayer(tileURL, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: attribution});
+
+    // marker.bindTooltip("my tooltip text").openTooltip();
+
+    const mapSumut = L.map('clusterMap',{
+        center : [2.5, 99],
+        zoom : 7,
+        fadeAnimation: false, 
+        fullscreenControl: {
+            pseudoFullscreen: false,
+            },
+        // layers: [grayscale, cities]
+    });
 
     tiles.addTo(mapSumut);
     //const indokab = L.geoJson(sumateraUtara).addTo(mymap);
@@ -61,21 +77,16 @@
 
     info.update = function (props) {
         this._div.innerHTML = '<h4><b>Cluster Sumatera Utara</b></h4>' +  (props ?
-            '<b>' + props.kabkot + '</b><br />' + props.cartodb_id + ' cluster / mi<sup>2</sup>'
+            '<b>' + props.kabkot + '</b><br />' + feature.properties.cartodb_id + ' cluster / mi<sup>2</sup>'
             : 'Hover over a state');
     };
 
     info.addTo(mapSumut);
 
-    function getColor(d) {
-        return  d > 60 ? '#800026' :
-                d > 55  ? '#BD0026' :
-                d > 50  ? '#E31A1C' :
-                d > 40  ? '#FC4E2A' :
-                d > 30   ? '#FD8D3C' :
-                d > 25   ? '#FEB24C' :
-                d > 20   ? '#FED976' :
-                            '#FFEDA0';
+    function getColor(c) {
+        return  c > 0 ? '#800026' :
+                c > 1  ? '#BD0026' :
+                         '#E31A1C' ;
     }
 
     function style(feature) {
@@ -95,7 +106,7 @@
         var layer = e.target;
 
         layer.setStyle({
-            weight: 5,
+            weight: 3,
             color: '#666',
             dashArray: '',
             fillOpacity: 0.7
@@ -137,8 +148,8 @@
 	legend.onAdd = function (map) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [20, 25, 30, 40, 45, 50, 55, 60],
-			labels = [],
+			grades = [0, 1, 2],
+			labels = ['cluster'],
 			from, to;
 
 		for (var i = 0; i < grades.length; i++) {
@@ -158,3 +169,4 @@
 
 </script>
 {% include 'base/js.html' %}
+{% endblock js %}

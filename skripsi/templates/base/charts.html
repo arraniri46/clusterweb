@@ -1,84 +1,90 @@
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5 mg-t-10">
-        <div class="card mb-5">
+<div class="row justify-content-around">
+    <div class="col-md-6 col-lg-6 mg-t-10">
+        <div class="card mb-5 border-0 shadow">
             <div class="card-header">
                 <h6 class="mg-b-5">Data Grafik Clustering</h6>
                 <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Cluster</h4>
             </div>
 
             <div class="card-body">
-                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                <div class="chart-container" style="width: 100%; height: 400px;">
                     <canvas id="chart-1"></canvas>
                 </div>
             </div>
+            <!-- <div class="card-footer"></div> -->
         </div>
     </div>
 
-    <div class="col-md-6 col-lg-5 mg-t-10">
-        <div class="card mb-5">
+    <div class="col-md-6 col-lg-6 mg-t-10">
+        <div class="card mb-5 border-0 shadow">
             <div class="card-header">
                 <h6 class="mg-b-5">Data Grafik</h6>
                 <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Objek Kendaraan</h4>
             </div>
 
             <div class="card-body">
-                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                <div class="chart-container" style="width: 100%; height: 400px;">
                     <canvas id="chart-2"></canvas>
                 </div>
             </div>
+            <!-- <div class="card-footer"></div> -->
         </div>
     </div>
 
     <div class="w-100"></div>
 
-    <div class="col-md-6 col-lg-5 mg-t-10">
-        <div class="card mb-5">
+    <div class="col-md-6 col-lg-6 mg-t-10">
+        <div class="card mb-5 border-0 shadow">
             <div class="card-header">
                 <h6 class="mg-b-5">Data Grafik</h6>
                 <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Pekerjaan</h4>
             </div>
 
             <div class="card-body">
-                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                <div class="chart-container" style="width: 100%; height: 400px;">
                     <canvas id="chart-3"></canvas>
                 </div>
             </div>
+            <!-- <div class="card-footer"></div> -->
         </div>
     </div>
 
-    <div class="col-md-6 col-lg-5 mg-t-10">
-        <div class="card mb-5">
+    <div class="col-md-6 col-lg-6 mg-t-10">
+        <div class="card mb-5 border-0 shadow">
             <div class="card-header">
                 <h6 class="mg-b-5">Data Grafik</h6>
                 <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Tenor</h4>
             </div>
 
             <div class="card-body">
-                <div class="chart-container shadow" style="width: 100%; height: 400px;">
+                <div class="chart-container" style="width: 100%; height: 400px;">
                     <canvas id="chart-4"></canvas>
                 </div>
             </div>
+            <!-- <div class="card-footer"></div> -->
         </div>
     </div>   
 
     <div class="col-md-8">
-        <div class="card mb-5">
+        <div class="card mb-5 border-0 shadow">
             <div class="card-header">
                 <h6 class="mg-b-5">Data Grafik Gabungan</h6>
                 <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Gabungan Terhadap Cluster</h4>
             </div>
 
             <div class="card-body">
-                <div class="chart-container shadow" style="width: 100%; height: 600px;">
+                <div class="chart-container" style="width: 100%; height: 600px;">
                     <canvas id="chart-5"></canvas>
                 </div>
             </div>
+            <!-- <div class="card-footer"></div> -->
         </div>
     </div>
 </div>
     
 <script>
     var ctx = document.getElementById('chart-1').getContext('2d');
+    var color = Chart.helpers.color;
     var configBar = {
         type: 'bar',
         data: {
@@ -86,9 +92,9 @@
             datasets: [{
                 label: 'Clusters',
                 data: {{dataCluster | safe}},
-                backgroundColor: '#007bff',
-                borderColor: '#007bff',
-                borderWidth: 4,
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: color(window.chartColors.blue),
+                borderWidth: 2,
                 pointBackgroundColor: '#007bff'
             }]
         },
@@ -122,6 +128,7 @@
 
 <script>    
     var ctx = document.getElementById('chart-2').getContext('2d');
+    var color = Chart.helpers.color;
     var configBar = {
         type: 'bar',
         data: {
@@ -129,9 +136,9 @@
             datasets: [{
                 label: 'Kendaraan',
                 data: {{dataKendaraan | safe}},
-                backgroundColor: '#007bff',
-                borderColor: '#007bff',
-                borderWidth: 4,
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: color(window.chartColors.red),
+                borderWidth: 2,
                 pointBackgroundColor: '#007bff'
             }]
         },
@@ -155,7 +162,10 @@
                 }]
             },
             responsive : true,
-            maintainAspectRatio : false
+            maintainAspectRatio : false,
+            legend: {
+                    position : 'top',
+            },
         }
     }
     var myChart = new Chart(ctx, configBar);
@@ -165,6 +175,7 @@
 
 <script>
     var ctx = document.getElementById('chart-3').getContext('2d');
+    var color = Chart.helpers.color;
     var configBar = {
         type: 'bar',
         data: {
@@ -172,9 +183,9 @@
             datasets: [{
                 label: 'Total Pekerjaan',
                 data: {{dataPekerjaan | safe}},
-                backgroundColor: '#007bff',
-                borderColor: '#007bff',
-                borderWidth: 4,
+                backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                borderColor: color(window.chartColors.green),
+                borderWidth: 2,
                 pointBackgroundColor: '#007bff'
             }]
         },
@@ -209,6 +220,7 @@
 
 <script>
     var ctx = document.getElementById('chart-4').getContext('2d');
+    var color = Chart.helpers.color;
     var configBar = {
         type: 'bar',
         data: {
@@ -216,9 +228,9 @@
             datasets: [{
                 label: 'Tenor',
                 data: {{dataTenor | safe}},
-                backgroundColor: '#007bff',
-                borderColor: '#007bff',
-                borderWidth: 4,
+                backgroundColor: color(window.chartColors.orange).alpha(0.5).rgbString(),
+                borderColor: color(window.chartColors.orange),
+                borderWidth: 2,
                 pointBackgroundColor: '#007bff'
             }]
         },
@@ -252,6 +264,7 @@
 </script>
 
 <script>
+    var color = Chart.helpers.color;
     var randomScalingFactor = function() {
 			return Math.round(Math.random() * 100);
         };
@@ -260,7 +273,8 @@
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [{
             label: 'Kendaraan',
-            backgroundColor: '#ff1744',
+            backgroundColor: color(window.chartColors.red).alpha(0.7).rgbString(),
+            borderColor: color(window.chartColors.red),
             stack: 'Stack 0',
             data: [
                 randomScalingFactor(),
@@ -273,8 +287,8 @@
             ]
         }, {
             label: 'Pekerjaan',
-            backgroundColor: '#2979ff',
-            stack: 'Stack 1',
+            backgroundColor: color(window.chartColors.blue).alpha(0.7).rgbString(),
+            borderColor: color(window.chartColors.blue),
             data: [
                 randomScalingFactor(),
                 randomScalingFactor(),
@@ -286,7 +300,8 @@
             ]
         }, {
             label: 'Tenor',
-            backgroundColor: '#00e676',
+            backgroundColor: color(window.chartColors.green).alpha(0.7).rgbString(),
+            borderColor: color(window.chartColors.green),
             stack: 'Stack 2',
             data: [
                 randomScalingFactor(),

@@ -23,15 +23,16 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
-    path('dashboard/', views.dashboard),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('home/', views.home),
     path('charts/', views.charts),
-    path('map/', views.map),
+    path('maps/', views.maps),
     path('table/', views.table),
     path('result/', views.result),
     path('upload/', views.upload, name='upload'),
-    path('example/', views.example),
     path('data-json/', views.dataJson, name='data-json'),
+    path('pekerjaan/', views.dataPekerjaan, name='data-pekerjaan'),
+    path('vendor/', views.dataVendor, name='data-vendor'),
 ]
 
 if settings.DEBUG:

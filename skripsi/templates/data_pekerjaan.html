@@ -1,0 +1,93 @@
+{% load static %}
+{% include 'base/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pekerjaan</title>
+</head>
+<body>
+    <div class="row" id="body-row">
+        <!-- Sidebar -->
+        <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+            <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+            <!-- Bootstrap List Group -->
+            <ul class="list-group sticky-top">
+                <!-- Separator with title -->
+                <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                    <small>MAIN MENU</small>
+                </li>
+                <!-- /END Separator -->
+                <!-- Menu with submenu -->
+                <a href="{% url 'dashboard' %}" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-home fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Dashboard</span>
+                    </div>
+                </a>
+                
+                <a href="{% url 'upload' %}" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-file fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Upload File</span>
+                    </div>
+                </a>
+                
+                <a href="#" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-tasks fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Elbow Graph</span>
+                    </div>
+                </a>
+                <!-- Separator with title -->
+                <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                    <small>STATISTIK</small>
+                </li>
+                <!-- /END Separator -->
+                <a href="#" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-sun fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Kendaraan</span>
+                    </div>
+                </a>
+                <a href="{% url 'data-vendor' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-code-branch fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Vendor</span>
+                    </div>
+                </a>
+                <!-- Separator without title -->
+                <!-- <li class="list-group-item sidebar-separator menu-collapsed"></li> -->
+                <!-- /END Separator -->
+                <a href="{% url 'data-pekerjaan' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-chalkboard-teacher fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Pekerjaan</span>
+                    </div>
+                </a>
+            </ul><!-- List Group END-->
+        </div><!-- sidebar-container END -->
+        
+        <!-- MAIN -->
+        <div class="col mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="total">{{ total | safe}}</div>
+                        <div class="vendor">{{ label_pekerjaan | safe}}</div>
+                        <div class="data_vendor">{{ data_pekerjaan | safe}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main Col END -->
+
+    </div><!-- body-row END -->
+
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
+
+</body>
+</html>

@@ -1,21 +1,20 @@
 {% load static %}
-{% include 'base/css.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    {% include 'base/css.html' %}
 </head>
 <body>
-  <nav class="navbar navbar-expand-md bg-dark bg-primary">
+  <nav class="navbar navbar-expand-md" style="background-color: darkslategrey;">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#" style="color: azure;">
         <!-- <img src="url" width="30" height="30" class="d-inline-block align-top" alt=""> -->
-        <span class="fa fa-question fa-fw mr-3"></span>
+        <span class="fas fa-braille fa-fw mr-3"></span>
         <span class="menu-collapsed">SKRIPSI</span>
     </a>
     

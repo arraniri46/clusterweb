@@ -1,135 +1,85 @@
 {% load static %}
+{% include 'base/base.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" 
-          href="{% static "css/nav.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/bootstrap.css" %}">
+    <title>Dashboard</title>
 </head>
 <body>
-        <!-- NAVIGASI BAR START-->
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <button type="button" id="sidebarCollapse" class="btn btn-info" onclick="toggleSidebar()">
-                <i class="fas fa-align-left"></i>
-                <span>span</span>
-            </button>
-            <a class="navbar-brand" href="#" style="margin-left: 250px;">SKRIPSI</a>
-        </nav>
-        <!-- NAVIGASI BAR END-->
-
-                    <div class="container-fluid">
-                        <div class="row">
-                          <!-- SIDE BAR START-->
-                          <nav class="pl-3 bg-white sidebar shadow" style="height: 900px;" id="sidebar">
-                            <div class="sidebar-sticky">
-
-                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-2 mt-4 mb-1 text-muted">
-                                    <span>Menu</span>
-                                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                                      <span data-feather="plus-circle"></span>
-                                    </a>
-                            </h6>
-                              <ul class="nav flex-column">
-                                <li class="nav-item">
-                                  <a class="nav-link active" href="#">
-                                    <span data-feather="home"></span>
-                                    Dashboard 
-                                    <span class="sr-only">(current)</span>
-                                  </a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href="#">
-                                    <span data-feather="file"></span>
-                                    Upload Data
-                                  </a>
-                                </li>
-                              </ul>
-                      
-                              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-2 mt-4 mb-1 text-muted">
-                                <span>Statistik</span>
-                                <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                                  <span data-feather="plus-circle"></span>
-                                </a>
-                              </h6>
-                              <ul class="nav flex-column mb-2">
-                                <li class="nav-item">
-                                  <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Kendaraan
-                                  </a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Vendor
-                                  </a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Pekerjaan
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </nav>
-                          <!-- SIDE BAR END-->
-
-                        <!-- CONTAINER START-->
-                          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                            <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                              
-                              <div class="btn-toolbar mb-2 mb-md-0">
-                                <div class="container-fluid bg-white shadow" style="height: 500px;">
-                                    
-                                    <h1 class="h2" style="margin: 10px 0px 0px 10px;">Dashboard</h1>
-
-                                    <div class="container" style="margin-top: 100px;">
-                                        <div class="card-deck">
-                                            <div class="card shadow mx-4">
-                                            <img src="{% static "img/mapping.png" %}" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h3 class="card-title">Mapping</h3>
-                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            </div>
-                                            <div class="card-footer">
-                                                <small class="text-muted">Last updated 3 mins ago</small>
-                                            </div>
-                                            </div>
-                                            <div class="card shadow mx-4">
-                                            <img src="{% static "img/chart.png" %}" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h3 class="card-title">Chart</h3>
-                                                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                                            </div>
-                                            <div class="card-footer">
-                                                <small class="text-muted">Last updated 3 mins ago</small>
-                                            </div>
-                                            </div>
-                                            <div class="card shadow mx-4">
-                                            <img src="{% static "img/table.png" %}" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h3 class="card-title">Table</h3>
-                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                                            </div>
-                                            <div class="card-footer">
-                                                <small class="text-muted">Last updated 3 mins ago</small>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                            
-                          </main>
-                        <!-- CONTAINER END-->                
+    <div class="row" id="body-row">
+        <!-- Sidebar -->
+        <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+            <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+            <!-- Bootstrap List Group -->
+            <ul class="list-group sticky-top">
+                <!-- Separator with title -->
+                <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                    <small>MAIN MENU</small>
+                </li>
+                <!-- /END Separator -->
+                <!-- Menu with submenu -->
+                <a href="{% url 'dashboard' %}" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-home fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Dashboard</span>
+                    </div>
+                </a>
+                
+                <a href="{% url 'upload' %}" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-file fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Upload File</span>
+                    </div>
+                </a>
+                
+                <a href="#" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-tasks fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Elbow Graph</span>
+                    </div>
+                </a>
+                <!-- Separator with title -->
+                <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                    <small>STATISTIK</small>
+                </li>
+                <!-- /END Separator -->
+                <a href="#" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-sun fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Kendaraan</span>
+                    </div>
+                </a>
+                <a href="{% url 'data-vendor' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-code-branch fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Vendor</span>
+                    </div>
+                </a>
+                <!-- Separator without title -->
+                <!-- <li class="list-group-item sidebar-separator menu-collapsed"></li> -->
+                <!-- /END Separator -->
+                <a href="{% url 'data-pekerjaan' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-chalkboard-teacher fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Pekerjaan</span>
+                    </div>
+                </a>
+            </ul><!-- List Group END-->
+        </div><!-- sidebar-container END -->
         
+        <!-- MAIN -->
+        <div class="col mt-5">
+            {% include 'result.html' %}            
+        </div>
+        <!-- Main Col END -->
+
+    </div><!-- body-row END -->
+
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
+
 </body>
-<script src="{%static "js/nav.js" %}"></script>
-<script src="{%static "vendor/bootstrap/bootstrap.js" %}"></script>
 </html>
