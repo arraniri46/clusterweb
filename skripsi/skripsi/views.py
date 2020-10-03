@@ -22,9 +22,6 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-def home(request):
-    return render(request, 'home.html')
-
 def result(request):
     return render(request, 'result.html')
 
@@ -34,19 +31,39 @@ def charts(request):
 def maps(request):
     return render(request, 'base/map.html')
 
+def dataKendaraan(request):
+
+    df = pd.read_pickle(file_)
+    
+    total_kendaraan = df['OBJECT'].value_counts().sum().tolist()
+    jenis_kendaraan = df['OBJECT'].value_counts(sort=False).rename_axis('OBJECT').reset_index(name='total_object_kendaraan')
+    list_jenis_kendaraan = jenis_kendaraan['OBJECT'].str.strip().tolist()
+    data_jenis_kendaraan = jenis_kendaraan['total_object_kendaraan'].tolist()
+
+    context = {
+        'total' : total_kendaraan,
+        'label_jenis_kendaraan' : list_jenis_kendaraan,
+        'data_jenis_kendaraan' : data_jenis_kendaraan,
+    }
+
+    return render(request, 'data_kendaraan.html', context)
+
 def dataVendor(request):
 
     df = pd.read_pickle(file_)
     
-    total_kendaraan = df['MERK'].value_counts().sum().tolist()
+    total_vendor_kendaraan = df['MERK'].value_counts().sum().tolist()
     vendor_kendaraan = df['MERK'].value_counts(sort=False).rename_axis('MERK').reset_index(name='total_merk')
     list_vendor_kendaraan = vendor_kendaraan['MERK'].str.strip().tolist()
     data_vendor_kendaraan = vendor_kendaraan['total_merk'].tolist()
 
+    zipped_vendor = zip(list_vendor_kendaraan, data_vendor_kendaraan)
+
     context = {
-        'total' : total_kendaraan,
+        'total' : total_vendor_kendaraan,
         'label_vendor' : list_vendor_kendaraan,
         'data_vendor' : data_vendor_kendaraan,
+        'zipped_vendor' : zipped_vendor,
     }
 
     return render(request, 'data_vendor.html', context)
@@ -61,13 +78,44 @@ def dataPekerjaan(request):
     list_pekerjaan = new_pekerjaan['PEKERJAAN'].str.strip().tolist()
     data_pekerjaan = new_pekerjaan['total_pekerjaan'].tolist()
 
+    zipped_pekerjaan = zip(list_pekerjaan, data_pekerjaan)
+
     context = {
         'total' : total_pekerjaan,
         'label_pekerjaan' : list_pekerjaan,
         'data_pekerjaan' : data_pekerjaan,
+        'zipped_pekerjaan' : zipped_pekerjaan,
     }
 
     return render(request, 'data_pekerjaan.html', context)
+
+def elbowGraph(request):
+    df = pd.read_pickle(file_)
+    
+    df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+    df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+
+    # df2['TENOR'] = df2['TENOR'].astype(str)
+
+    # dataAkhir = pd.DataFrame(df['cluster'].value_counts())
+    # labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
+    # totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
+
+
+    cost = list(range(1,8))
+    # for num_clusters in list(range(1,5)):
+    #     kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2, n_jobs=-1)
+    #     kproto.fit_predict(df2, categorical=[0,1,2])
+    #     cost.append(kproto.cost_)
+
+    n_cluster = list(range(1,8))
+
+    context = {
+        'n_cost' : cost,
+        'n_cluster' : n_cluster,
+    }
+
+    return render(request, 'elbow_graph.html', context)
 
 def dashboard(request):
     df = pd.read_pickle(file_)

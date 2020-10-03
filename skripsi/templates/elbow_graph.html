@@ -1,0 +1,200 @@
+{% load static %}
+{% include 'base/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pekerjaan</title>
+</head>
+<body>
+    <div class="row" id="body-row">
+        <!-- Sidebar -->
+        <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+            <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+            <!-- Bootstrap List Group -->
+            <ul class="list-group sticky-top">
+                <!-- Separator with title -->
+                <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                    <small>MAIN MENU</small>
+                </li>
+                <!-- /END Separator -->
+                <!-- Menu with submenu -->
+                <a href="{% url 'dashboard' %}" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-home fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Dashboard</span>
+                    </div>
+                </a>
+                
+                <a href="{% url 'upload' %}" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-file fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Upload File</span>
+                    </div>
+                </a>
+                
+                <a href="{% url 'elbow-graph' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-tasks fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Elbow Graph</span>
+                    </div>
+                </a>
+                <!-- Separator with title -->
+                <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                    <small>STATISTIK</small>
+                </li>
+                <!-- /END Separator -->
+                <a href="{% url 'data-jenis-kendaraan' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-sun fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Kendaraan</span>
+                    </div>
+                </a>
+                <a href="{% url 'data-vendor' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-code-branch fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Vendor</span>
+                    </div>
+                </a>
+                <!-- Separator without title -->
+                <!-- <li class="list-group-item sidebar-separator menu-collapsed"></li> -->
+                <!-- /END Separator -->
+                <a href="{% url 'data-pekerjaan' %}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fas fa-chalkboard-teacher fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Pekerjaan</span>
+                    </div>
+                </a>
+            </ul><!-- List Group END-->
+        </div><!-- sidebar-container END -->
+        
+        <!-- MAIN -->
+        <div class="col my-3">
+            <div class="container-fluid">
+                <div class="card border-0">
+                    <div class="card-header">
+                        <h2>Perhitungan Elbow Graph</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 my-3 d-flex justify-content-center">
+                                <div class="card border-0">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <form method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div class="input-group my-2" style="width: 400px; margin-top: 100px;">
+                                                  <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" name="file" id="selectedFile">
+                                                    <label class="custom-file-label" for="selectedFile">Choose file...</label>
+                                                  </div>
+                                                </div>
+                    
+                                                <div class="form-group" style="width: 400px; margin-top: 50px;">
+                                                    <!-- <label for="exampleInputEmail1">Cluster</label> -->
+                                                    <input class="form-control" type="text" id="exampleInputEmail1" placeholder="Jumlah Cluster">
+                                                    <small id="clusterHelp" class="form-text text-muted">Masukkan jumlah cluster.</small>
+                                                </div>
+                                              </form>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-primary">Proses</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="col-lg-8 my-3">
+                                <div class="card shadow">
+                                    <h6 class="bg-info text-light py-2 pl-2">Grafik Elbow Graph</h6>
+                                    <div class="card-header">
+                                        <h4 class="font-weight-bold m-0">Menentukan Jumlah Optimal Cluster (k)</h4>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                        <div class="chart-container" style="width: 100%; height: 400px;">
+                                            <canvas id="chart-1"></canvas>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="card-footer"></div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main Col END -->
+
+    </div><!-- body-row END -->
+
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
+{% block script %}
+<script>
+    $('#selectedFile').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+  </script>
+
+    <script>
+        var ctx = document.getElementById('chart-1').getContext('2d');
+        
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(231,233,237)'
+        };
+
+        var configBar = {
+            type: 'line',
+            data: {
+                labels: {{n_cluster | safe}},
+                datasets: [{
+                    label: 'optimal K',
+                    data: {{n_cost| safe}},
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,                    
+                    borderWidth: 3,
+                }],
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback: function(label) {
+                            if (/\s/.test(label)) {
+                                return label.split(" ");
+                            }else{
+                                return label;
+                            }              
+                            }
+                        }
+                    }]
+                },
+                responsive : true,
+                maintainAspectRatio : false
+            }
+        }
+        var myChart = new Chart(ctx, configBar);
+    </script>
+{% endblock script %}
+</body>
+</html>
