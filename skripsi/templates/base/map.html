@@ -45,7 +45,8 @@
 <script>
 
     const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>';
-    const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    // const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const tileURL = 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
     const tiles = L.tileLayer(tileURL, {attribution});
 
     // var grayscale   = L.tileLayer(tileURL, {id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: attribution}),
@@ -77,15 +78,15 @@
 
     info.update = function (props) {
         this._div.innerHTML = '<h4><b>Cluster Sumatera Utara</b></h4>' +  (props ?
-            '<b>' + props.kabkot + '</b><br />' + feature.properties.cartodb_id + ' cluster / mi<sup>2</sup>'
-            : 'Hover over a state');
+            '<b>' + props.kabkot + '</b><br />' + props.cartodb_id + ' cluster / mi<sup>2</sup>': 'Hover over a state');
     };
 
     info.addTo(mapSumut);
 
     function getColor(c) {
-        return  c > 0 ? '#800026' :
-                c > 1  ? '#BD0026' :
+        return  c > 50  ? '#5F0785' : //ungu
+                c > 30 ? '#0E6843' : //ijo
+                c > 0 ? '#2F348A' : //merah
                          '#E31A1C' ;
     }
 
@@ -148,20 +149,20 @@
 	legend.onAdd = function (map) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 1, 2],
+			grades = [0, 30, 50],
 			labels = ['cluster'],
-			from, to;
+			no_of_cluster;
 
 		for (var i = 0; i < grades.length; i++) {
-			from = grades[i];
-			to = grades[i + 1];
+			no_of_cluster = grades[i];
 
 			labels.push(
-				'<i style="background:' + getColor(from + 1) + '"></i> ' +
-				from + (to ? '&ndash;' + to : '+'));
+				'<i style="background:' + getColor(no_of_cluster) + '"></i> ' +
+				no_of_cluster );
+                // + (no_of_cluster ? '&ndash;' + no_of_cluster : '+'));
 		}
 
-		div.innerHTML = labels.join('<br>');
+		div.innerHTML = labels.join('<br> <br>');
 		return div;
 	};
 

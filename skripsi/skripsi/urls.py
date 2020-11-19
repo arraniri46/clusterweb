@@ -26,7 +26,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('charts/', views.charts),
     path('maps/', views.maps),
-    path('table/', views.table),
     path('result/', views.result),
     path('upload/', views.upload, name='upload'),
     path('data-json/', views.dataJson, name='data-json'),

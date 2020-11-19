@@ -7,44 +7,8 @@
 </style>
 
 <div class="container-fluid">
-    <!-- style="padding: 100px 5px 250px 50px; box-sizing: border-box; position: static; display: inline-flex;" -->
-      <!-- <div class="d-sm-flex align-items-center justify-content-between mg-b-10 mg-lg-b-15 mg-xl-b-10">
-        <div>
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-style1 mg-b-10">
-              <li class="breadcrumb-item"><a href="http://127.0.0.1:8000/home/">Dashboard</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Result</li>
-            </ol>
-          </nav>
-          <h4 class="mg-b-0 tx-spacing--1">Result</h4>
-        </div>
-        <div class="d-none d-md-block">	  	
-          <button class="btn btn-sm pd-x-15 btn-light btn-uppercase"><i data-feather="save" class="wd-10 mg-r-5"></i> Save</button>
-          <button class="btn btn-sm pd-x-15 btn-light btn-uppercase mg-l-5"><i data-feather="upload" class="wd-10 mg-r-5"></i> Export</button>
-          <button class="btn btn-sm pd-x-15 btn-light btn-uppercase mg-l-5"><i data-feather="share-2" class="wd-10 mg-r-5"></i> Share</button>
-          <button class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5"><i data-feather="sliders" class="wd-10 mg-r-5"></i> Settings</button>
-        </div>
-      </div> -->
-
-      <!-- <div class="container-fluid">
-        <div class="row justify-content-around">
-          <div class="col-sm col-4 ml-3 p-5 bg-primary">
-            One of three columns
-          </div>
-          <div class="col-sm col-4 ml-3 p-5 bg-success">
-            One of three columns
-          </div>
-          <div class="col-sm col-4 ml-3 p-5 bg-warning">
-            One of three columns
-          </div>
-          <div class="col-sm col-4 ml-3 p-5 bg-danger">
-            One of four columns
-          </div>
-        </div>
-      </div> -->
-
       <div class="row">
-        <div class="col-lg-8 col-xl-9">
+        <div class="col-sm-9 col-md-9 col-lg-9">
             <div class="card border-0 shadow-sm">
               <div class="card-header d-flex flex-column flex-sm-row align-items-sm-start justify-content-sm-between">
                 <div>
@@ -64,121 +28,11 @@
 
               <div class="card-body pd-lg-25">
                 <div class="row">
-                  <div class="col-lg-7 col-xl-10">
+                  <div class="col-md-12">
                     <div class="container" id="map">
                         {% include 'base/map.html' %}
                     </div>
                   </div>
-
-                  <div class="col-lg-5 col-xl-2 mg-t-30 mg-lg-t-0">
-                    <div class="row">
-                      <div class="col-sm-6 col-lg-12">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                          <h6 class="tx-uppercase tx-10 tx-spacing-1 tx-color-02 tx-semibold">Cluster</h6>
-                          <span class="tx-10 tx-color-04">1</span>
-                        </div>    
-                      </div>
-
-                      <div class="col-sm-6 col-lg-12 mg-t-30 mg-sm-t-0 mg-lg-t-30">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <h6 class="tx-uppercase tx-10 tx-spacing-1 tx-color-02 tx-semibold mg-b-0">Pekerjaan</h6>
-                          <span class="tx-10 tx-color-04">51351</span>
-                        </div>
-                        <div class="mb-2">
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Peg.Swasta Formal</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-6 col-lg-12 mg-t-30">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <h6 class="tx-uppercase tx-10 tx-spacing-1 tx-color-02 tx-semibold mg-b-0">Jenis Kendaraan</h6>
-                          <span class="tx-10 tx-color-04">51351</span>
-                        </div>
-                        <div class="mb-2">
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-6 col-lg-12 mg-t-30">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <h6 class="tx-uppercase tx-10 tx-spacing-1 tx-color-02 tx-semibold mg-b-0">Tenor</h6>
-                          <span class="tx-10 tx-color-04">54255</span>
-                        </div>
-                        <div class="mb-2">
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <h6 class=""><small>Wiraswasta</small></h6>
-                            <h6 class=""><small>250</small></h6>                          
-                          </div>
-                        </div>
-                       
-                      </div>
-                      <div class="col-sm-6 col-lg-12 mg-t-30">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <h6 class="tx-uppercase tx-10 tx-spacing-1 tx-color-02 tx-semibold mg-b-0">Rata-rata Harga Kendaraan</h6>
-                          <span class="tx-10 tx-color-04"></span>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                          <span class="" id="tglGlobalUpdate">1769000000</span>
-                        </div>
-                        
-                      </div>
-                    </div>    
-                  </div>
-
                 </div>
               </div>
               <!-- card-body -->
@@ -186,9 +40,9 @@
               <!-- <div class="card-footer"></div> -->
 
             </div><!-- card -->
-          </div>
+        </div>
           <!-- CHART BUNDAR -->
-          <div class="col-md-6 col-lg-4 col-xl-3 mg-t-10 mg-lg-t-0">
+        <div class="col-sm-2 col-md-2 col-lg-3 mg-t-10 mg-lg-t-0">
             <div class="card border-0 shadow">
               <div class="card-header">
                 <h4 class="mg-b-0">Rasio Persebaran</h4>
@@ -200,7 +54,7 @@
               <!-- card-footer -->
             </div><!-- card -->
         </div>
-        <!-- END CHART BUNDAR -->  
+        <!-- END CHART BUNDAR --> 
       </div>     
 </div>
 

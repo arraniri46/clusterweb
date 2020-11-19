@@ -7,7 +7,7 @@ import numpy as np
 '''df = pd.read_csv('Users/user/PycharmProjects/skripsi/SKDR/data/20132018.csv')'''
 
 
-def data_kecil(filename):
+def data_kecil(filenames):
     filename = 'static/upload_file/'+filename
     bulan = pd.read_csv(filename, usecols=[1,2,3,4,5,6], skiprows=[0,14])
     tahun = pd.read_csv(filename, usecols=[1,2,3,4,5,6], skiprows=[0,2,3,4,5,6,7,8,9,10,11,12,13,14])

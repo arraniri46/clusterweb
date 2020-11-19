@@ -10,10 +10,14 @@ import numpy as np
 import os
 import _pickle as cPickle
 import json
+import random
+import xlrd
+
+from .forms import FormField, UploadFileForm
 
 
 #BACA FILE UPLOADED
-file_ = os.path.join(settings.BASE_DIR, 'media/data2pkl.pkl')
+file_ = os.path.join(settings.BASE_DIR, 'media/data.xlsx')
 # file_pickle = 
 
 def index(request):
@@ -33,7 +37,8 @@ def maps(request):
 
 def dataKendaraan(request):
 
-    df = pd.read_pickle(file_)
+    files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
+    df = pd.read_excel(files_)
     
     total_kendaraan = df['OBJECT'].value_counts().sum().tolist()
     jenis_kendaraan = df['OBJECT'].value_counts(sort=False).rename_axis('OBJECT').reset_index(name='total_object_kendaraan')
@@ -50,7 +55,8 @@ def dataKendaraan(request):
 
 def dataVendor(request):
 
-    df = pd.read_pickle(file_)
+    files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
+    df = pd.read_excel(files_)
     
     total_vendor_kendaraan = df['MERK'].value_counts().sum().tolist()
     vendor_kendaraan = df['MERK'].value_counts(sort=False).rename_axis('MERK').reset_index(name='total_merk')
@@ -70,7 +76,8 @@ def dataVendor(request):
 
 def dataPekerjaan(request):
 
-    df = pd.read_pickle(file_)
+    files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
+    df = pd.read_excel(files_)
     
     pekerjaan = df[['PEKERJAAN']][~df['PEKERJAAN'].isin(['-'])]
     total_pekerjaan = pekerjaan['PEKERJAAN'].value_counts().sum().tolist()
@@ -89,36 +96,9 @@ def dataPekerjaan(request):
 
     return render(request, 'data_pekerjaan.html', context)
 
-def elbowGraph(request):
-    df = pd.read_pickle(file_)
-    
-    df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
-    df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
-
-    # df2['TENOR'] = df2['TENOR'].astype(str)
-
-    # dataAkhir = pd.DataFrame(df['cluster'].value_counts())
-    # labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
-    # totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
-
-
-    cost = list(range(1,8))
-    # for num_clusters in list(range(1,5)):
-    #     kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2, n_jobs=-1)
-    #     kproto.fit_predict(df2, categorical=[0,1,2])
-    #     cost.append(kproto.cost_)
-
-    n_cluster = list(range(1,8))
-
-    context = {
-        'n_cost' : cost,
-        'n_cluster' : n_cluster,
-    }
-
-    return render(request, 'elbow_graph.html', context)
-
 def dashboard(request):
-    df = pd.read_pickle(file_)
+    files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
+    df = pd.read_excel(files_)
     # df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR','cluster']]
     # df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR','cluster']]
 
@@ -148,26 +128,26 @@ def dashboard(request):
     listTenor = tenor['TENOR'].str.strip().tolist()
     listDataTenor = tenor['totalTenor'].tolist()
 
-    # # CLUSTERING
-    # kp = KPrototypes(n_clusters=4, init='Huang')
-    # cluster = kp.fit_predict(df2, categorical=[0,1,2])
-    # df['cluster'] = cluster
+    # CLUSTERING
+    kp = KPrototypes(n_clusters=3, init='Huang', verbose=2, n_jobs=-1)
+    cluster = kp.fit_predict(df2, categorical=[0,1,2])
+    df['cluster'] = cluster
 
     # PARSING DATA CLUSTER
-    # dataCluster = df['cluster'].astype(str)
-    # dataCluster = dataCluster.value_counts(sort=False).rename_axis('cluster').reset_index(name='totalCluster')
-    # listCluster = dataCluster['cluster'].str.strip().tolist()
-    # listDataCluster = dataCluster['totalCluster'].tolist()
+    dataCluster = df['cluster'].astype(str)
+    dataCluster = dataCluster.value_counts(sort=False).rename_axis('cluster').reset_index(name='totalCluster')
+    listCluster = dataCluster['cluster'].str.strip().tolist()
+    listDataCluster = dataCluster['totalCluster'].tolist()
 
-    # # PARSING DATA CLUSTER MAP
-    # df_cluster_0 = df2.loc[df2['cluster'] == 0]
-    # df_cluster_0 = df_cluster_0['cluster'].value_counts().tolist()
+    # PARSING DATA CLUSTER MAP
+    df_cluster_0 = df.loc[df['cluster'] == 0]
+    df_cluster_0 = df_cluster_0['cluster'].value_counts().tolist()
 
-    # df_cluster_1 = df2.loc[df2['cluster'] == 1]
-    # df_cluster_1 = df_cluster_1['cluster'].value_counts()
+    df_cluster_1 = df.loc[df['cluster'] == 1]
+    df_cluster_1 = df_cluster_1['cluster'].value_counts()
 
-    # df_cluster_2 = df2.loc[df2['cluster'] == 2]
-    # df_cluster_2 = df_cluster_2['cluster'].value_counts()
+    df_cluster_2 = df.loc[df['cluster'] == 2]
+    df_cluster_2 = df_cluster_2['cluster'].value_counts()
 
     # KATEGORI PROPERTIES MAP
     columnKategori = []
@@ -188,59 +168,140 @@ def dashboard(request):
         'dataKendaraan' : listDataKendaraan,
         'labelTenor' : listTenor,
         'dataTenor' : listDataTenor,
-        # 'labelCluster' : listCluster,
-        # 'dataCluster' : listDataCluster,
+        'labelCluster' : listCluster,
+        'dataCluster' : listDataCluster,
         'kolomKategori' : columnKategori,
-        # 'df_cluster_0' : df_cluster_0,
-        # 'df_cluster_1' : df_cluster_1,
-        # 'df_cluster_2' : df_cluster_2,
+        'df_cluster_0' : df_cluster_0,
+        'df_cluster_1' : df_cluster_1,
+        'df_cluster_2' : df_cluster_2,
+        'clusters' : cluster,
     }
     return render(request, 'dashboard.html', context)
 
-class UploadFileForm(forms.Form):
-    file = forms.FileField()
-
+#FUNGSI UPLOAD MASIH BERMASALAHH
 def upload(request):
-    context = {}
+    
+    form_field = FormField()
+    context = {
+        'form_field' : form_field
+    }
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             form = request.FILES['file']
+            request.session['file'] = request.FILES['file'].name
+            
+            # request.session['file'] = form
             fs = FileSystemStorage()
-            name = fs.save(form.name, form)
-            context['url'] = fs.url(name)
+            fs.save(form.name, form)
+            # context['url'] = fs.url(name)
 
-            return HttpResponseRedirect('/home/')
+            return HttpResponseRedirect('/dashboard/')
 
     else:
         form = UploadFileForm()
 
     return render(request, 'upload.html', context)
+
+def elbowGraph(request):
+
+    form_field = FormField()
+    context = {
+        'form_field' : form_field
+    }
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form = request.FILES['file']
+            # request['file'] = request.FILES['file'].name
+            
+            # request.session['file'] = form
+            fs = FileSystemStorage()
+            fs.save(form.name, form)
+            # context['url'] = fs.url(name)
+            df = pd.read_excel(form)
+            df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+            df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+
+            df2['TENOR'] = df2['TENOR'].astype(str)
+
+            # dataAkhir = pd.DataFrame(df['cluster'].value_counts())
+            # labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
+            # totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
+
+
+            cost = []
+            # for i in range(1,8):
+            #     a = random.randint(1,20)
+            #     cost.append(a)
+            for num_clusters in list(range(1,6)):
+                kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2, n_jobs=-1)
+                kproto.fit_predict(df2, categorical=[0,1,2])
+                cost.append(kproto.cost_)
+
+            n_cluster = []
+            for i in range(1,6):
+                n_cluster.append(i)
+
+            form_field = FormField()
+
+            context = {
+                'n_cost' : cost,
+                'n_cluster' : n_cluster,
+                'form_field' : form_field,
+                }
+
+            # return HttpResponseRedirect('/elbow-graph/', context)
+            return render(request, 'elbow_graph.html', context)
+
+    else:
+        form = UploadFileForm()
+
+    return render(request, 'elbow_graph.html', context)
+
+# def elbowGraph(request):
+
     
+    files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
+    df = pd.read_excel(files_)
 
-#SHOW FILE KE DATATABLE HTML
-def table(request):
+    df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+    df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
 
-    # df = pd.read_csv(file_)
-    
-    # pickleIn = open(file_,'rb')
-    # df = cPickle.load(pickleIn)
+    df2['TENOR'] = df2['TENOR'].astype(str)
 
-    # df = df[['ID','KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'STATUS']]
-    # allData = []
+    # dataAkhir = pd.DataFrame(df['cluster'].value_counts())
+    # labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
+    # totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
 
-    # for i in range(df.shape[0]):
-    #     temp = df.iloc[i]
-    #     allData.append(dict(temp))
-    # context = {
-    #     'data' : allData
-    # }
 
-    return render(request, 'base/table.html')
+    cost = []
+    # for i in range(1,8):
+    #     a = random.randint(1,20)
+    #     cost.append(a)
+    for num_clusters in list(range(1,6)):
+        kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2)
+        kproto.fit_predict(df2, categorical=[0,1,2])
+        cost.append(kproto.cost_)
+
+    n_cluster = []
+    for i in range(1,6):
+        n_cluster.append(i)
+
+    form_field = FormField()
+
+    context = {
+        'n_cost' : cost,
+        'n_cluster' : n_cluster,
+        'form_field' : form_field,
+        }
+
+    return render(request, 'elbow_graph.html', context)
 
 def dataJson(request):
 
-    df = pd.read_pickle(file_)
+    files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
+    df = pd.read_excel(files_)
     df2 = df[['ID','KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR' ,'OTR']].astype(str)
     df3 = df2.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
     allData = []
