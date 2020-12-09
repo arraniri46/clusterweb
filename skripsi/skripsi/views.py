@@ -129,9 +129,16 @@ def dashboard(request):
     listDataTenor = tenor['totalTenor'].tolist()
 
     # CLUSTERING
-    kp = KPrototypes(n_clusters=3, init='Huang', verbose=2, n_jobs=-1)
+    input_cluster = int(request.session.get('jumlah_cluster'))
+
+    kp = KPrototypes(n_clusters=input_cluster, init='Huang', verbose=2, n_jobs=-1)
     cluster = kp.fit_predict(df2, categorical=[0,1,2])
     df['cluster'] = cluster
+
+    # request.session['dataframe'] = cluster
+    global datafarame
+    def datafarame():
+        return cluster
 
     # PARSING DATA CLUSTER
     dataCluster = df['cluster'].astype(str)
@@ -195,6 +202,10 @@ def upload(request):
             fs = FileSystemStorage()
             fs.save(form.name, form)
             # context['url'] = fs.url(name)
+        
+        input_n_cluster = FormField(request.POST)
+        if input_n_cluster.is_valid():
+            request.session['jumlah_cluster'] = request.POST['jumlah_cluster']
 
             return HttpResponseRedirect('/dashboard/')
 
@@ -229,18 +240,19 @@ def elbowGraph(request):
             # labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
             # totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
 
+        input_n_cluster = FormField(request.POST)
+        if input_n_cluster.is_valid():
+            input_n_cluster = int(request.POST.get('jumlah_cluster'))
 
             cost = []
-            # for i in range(1,8):
-            #     a = random.randint(1,20)
-            #     cost.append(a)
-            for num_clusters in list(range(1,6)):
+        
+            for num_clusters in range(1,input_n_cluster+1):
                 kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2, n_jobs=-1)
                 kproto.fit_predict(df2, categorical=[0,1,2])
                 cost.append(kproto.cost_)
 
             n_cluster = []
-            for i in range(1,6):
+            for i in range(1,input_n_cluster+1):
                 n_cluster.append(i)
 
             form_field = FormField()
@@ -259,51 +271,57 @@ def elbowGraph(request):
 
     return render(request, 'elbow_graph.html', context)
 
-# def elbowGraph(request):
+#  def elbowGraph(request):
 
     
-    files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
-    df = pd.read_excel(files_)
+#     files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
+#     df = pd.read_excel(files_)
 
-    df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
-    df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+#     df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+#     df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
 
-    df2['TENOR'] = df2['TENOR'].astype(str)
+#     df2['TENOR'] = df2['TENOR'].astype(str)
 
-    # dataAkhir = pd.DataFrame(df['cluster'].value_counts())
-    # labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
-    # totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
+#     # dataAkhir = pd.DataFrame(df['cluster'].value_counts())
+#     # labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
+#     # totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
 
 
-    cost = []
-    # for i in range(1,8):
-    #     a = random.randint(1,20)
-    #     cost.append(a)
-    for num_clusters in list(range(1,6)):
-        kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2)
-        kproto.fit_predict(df2, categorical=[0,1,2])
-        cost.append(kproto.cost_)
+#     cost = []
+#     # for i in range(1,8):
+#     #     a = random.randint(1,20)
+#     #     cost.append(a)
+#     for num_clusters in list(range(1,6)):
+#         kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2)
+#         kproto.fit_predict(df2, categorical=[0,1,2])
+#         cost.append(kproto.cost_)
 
-    n_cluster = []
-    for i in range(1,6):
-        n_cluster.append(i)
+#     n_cluster = []
+#     for i in range(1,6):
+#         n_cluster.append(i)
 
-    form_field = FormField()
+#     form_field = FormField()
 
-    context = {
-        'n_cost' : cost,
-        'n_cluster' : n_cluster,
-        'form_field' : form_field,
-        }
+#     context = {
+#         'n_cost' : cost,
+#         'n_cluster' : n_cluster,
+#         'form_field' : form_field,
+#         }
 
-    return render(request, 'elbow_graph.html', context)
+#     return render(request, 'elbow_graph.html', context)
 
 def dataJson(request):
 
     files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
     df = pd.read_excel(files_)
     df2 = df[['ID','KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR' ,'OTR']].astype(str)
+    
+    cluster = datafarame()
+    cluster = cluster.astype(str)
+    df2['cluster'] = cluster
+
     df3 = df2.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+
     allData = []
 
     for i in range(df3.shape[0]):
