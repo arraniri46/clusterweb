@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
 
-<div class="container col-md-10 table-responsive">
+<div class="container col-md-12 table-responsive">
     <table id="table-data" class="table table-hover">
         <caption>Hasil clustering</caption>
         <thead class="thead-dark">
@@ -20,6 +20,17 @@
         <tbody>
         
         </tbody>
+
+        <tfoot>
+            <tr>
+                <th>KABUPATEN</th>
+                <th>PEKERJAAN</th>
+                <th>OBJECT</th>
+                <th>TENOR</th>
+                <th>OTR</th>
+                <th>cluster</th>           
+            </tr>
+        </tfoot>
             
     </table>
 </div>
@@ -33,6 +44,7 @@
     $(document).ready(function() {
         $('#table-data').DataTable({
             "processing": true,
+            
             // "serverSide": true,
             "ajax" : "http://127.0.0.1:8000/data-json",
             // scrollY:        400,
@@ -49,10 +61,31 @@
                 { "data": "TENOR" },
                 { "data": "OTR" },
                 { "data": "cluster" },
-            ]
+            ],
+            initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value="">Show all</option></select>')
+                    .appendTo( $(column.footer()).empty())
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
         });
     
 } );
 </script>
+
 {% endblock js %}
     

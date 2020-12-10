@@ -270,48 +270,24 @@
         };
         
     var barChartData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: {{labelCluster | safe}},
         datasets: [{
             label: 'Kendaraan',
             backgroundColor: color(window.chartColors.red).alpha(0.7).rgbString(),
             borderColor: color(window.chartColors.red),
             stack: 'Stack 0',
-            data: [
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor()
-            ]
+            data: {{dataKendaraan | safe}}
         }, {
             label: 'Pekerjaan',
             backgroundColor: color(window.chartColors.blue).alpha(0.7).rgbString(),
             borderColor: color(window.chartColors.blue),
-            data: [
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor()
-            ]
+            data: {{dataPekerjaan | safe}}
         }, {
             label: 'Tenor',
             backgroundColor: color(window.chartColors.green).alpha(0.7).rgbString(),
             borderColor: color(window.chartColors.green),
             stack: 'Stack 2',
-            data: [
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor()
-            ]
+            data: {{dataTenor | safe}}
         }]
 
     };
