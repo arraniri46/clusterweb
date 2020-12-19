@@ -87,7 +87,7 @@
                                                 {% csrf_token %}
                                                 <div class="input-group my-2" style="margin-top: 100px;">
                                                   <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" name="file" id="selectedFile">
+                                                    <input type="file" class="custom-file-input" name="file" id="selectedFile" required data-msg-required="Please select file">
                                                     <label class="custom-file-label" for="selectedFile">Choose file...</label>
                                                   </div>
                                                 </div>

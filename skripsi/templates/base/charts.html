@@ -265,9 +265,6 @@
 
 <script>
     var color = Chart.helpers.color;
-    var randomScalingFactor = function() {
-			return Math.round(Math.random() * 100);
-        };
         
     var barChartData = {
         labels: {{labelCluster | safe}},
@@ -281,6 +278,7 @@
             label: 'Pekerjaan',
             backgroundColor: color(window.chartColors.blue).alpha(0.7).rgbString(),
             borderColor: color(window.chartColors.blue),
+            stack : 'Stack 1',
             data: {{dataPekerjaan | safe}}
         }, {
             label: 'Tenor',

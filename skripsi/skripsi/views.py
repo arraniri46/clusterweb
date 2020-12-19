@@ -12,6 +12,7 @@ import _pickle as cPickle
 import json
 import random
 import xlrd
+import matplotlib.pyplot as plt 
 
 from .forms import FormField, UploadFileForm
 
@@ -131,9 +132,9 @@ def dashboard(request):
     # CLUSTERING
     input_cluster = int(request.session.get('jumlah_cluster'))
 
-    kp = KPrototypes(n_clusters=input_cluster, init='Huang', verbose=2, n_jobs=-1)
-    cluster = kp.fit_predict(df2, categorical=[0,1,2])
-    df['cluster'] = cluster
+    kp = KPrototypes(n_clusters=input_cluster, init='random', verbose=2, n_jobs=-1, n_init=5, max_iter=10)
+    cluster = kp.fit_predict(df, categorical=[0,1,2,3])
+    df['cluster'] = cluster+1
 
     # request.session['dataframe'] = cluster
     global datafarame
@@ -165,6 +166,8 @@ def dashboard(request):
     for i in range(df.shape[0]):
         temp = df.iloc[i]
         allData.append(dict(temp))
+
+    # topCluster    
 
     context = {
         'data' : allData,
@@ -247,9 +250,10 @@ def elbowGraph(request):
             cost = []
         
             for num_clusters in range(1,input_n_cluster+1):
-                kproto = KPrototypes(n_clusters=num_clusters, init='Cao', verbose=2, n_jobs=-1)
-                kproto.fit_predict(df2, categorical=[0,1,2])
+                kproto = KPrototypes(n_clusters=num_clusters, init='random', verbose=2, n_jobs=-1, n_init=5, max_iter=5)
+                kproto.fit_predict(df, categorical=[0,1,2,3])
                 cost.append(kproto.cost_)
+
 
             n_cluster = []
             for i in range(1,input_n_cluster+1):
@@ -315,9 +319,9 @@ def dataJson(request):
     files_ = os.path.join(settings.BASE_DIR, 'media\\'+request.session.get('file'))
     df = pd.read_excel(files_)
     df2 = df[['ID','KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR' ,'OTR']].astype(str)
-    
+    df2['TENOR'] = df2['TENOR'] + str(' Bulan')
     cluster = datafarame()
-    cluster = cluster.astype(str)
+    cluster = (cluster+1).astype(str)
     df2['cluster'] = cluster
 
     df3 = df2.apply(lambda x: x.str.strip() if x.dtype == "object" else x)

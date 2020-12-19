@@ -78,16 +78,16 @@
 
     info.update = function (props) {
         this._div.innerHTML = '<h4><b>Cluster Sumatera Utara</b></h4>' +  (props ?
-            '<b>' + props.kabkot + '</b><br />' + props.cartodb_id + ' cluster / mi<sup>2</sup>': 'Hover over a state');
+            '<b>' + props.kabkot + '</b><br />' + props.cartodb_id + ' cluster': 'Hover over a state');
     };
 
     info.addTo(mapSumut);
 
     function getColor(c) {
-        return  c > 50  ? '#5F0785' : //ungu
-                c > 30 ? '#0E6843' : //ijo
-                c > 0 ? '#2F348A' : //merah
-                         '#E31A1C' ;
+        return  c < 0  ? '#5F0785' : //ungu
+                c < 1 ? '#0E6843' : //ijo
+                c < 2 ? '#E31A1C' : //merah
+                         '#2F348A' ;
     }
 
     function style(feature) {
@@ -97,7 +97,8 @@
             color: 'white',
             dashArray: '2',
             fillOpacity: 0.7,
-            fillColor: getColor(feature.properties.cartodb_id),
+            // fillColor: getColor(feature.properties.cartodb_id),
+            fillColor: getColor({{labelCluster | safe}}),
         };
     }
 
@@ -149,7 +150,7 @@
 	legend.onAdd = function (map) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 30, 50],
+			grades = {{labelCluster | safe}}.sort(),
 			labels = ['cluster'],
 			no_of_cluster;
 
@@ -166,7 +167,20 @@
 		return div;
 	};
 
-	legend.addTo(mapSumut);
+    legend.addTo(mapSumut);
+    
+    var clusterOption = L.control({position: 'bottomleft'});
+
+    clusterOption.onAdd = function(map){
+        var div = L.DomUtil.create('div','info');
+
+        div.innerHTML = '<b>Show Cluster</b>' + '<br/>' 
+        + '<select class="form-control form-control-sm mt-1"> {% for cluster in labelCluster %}<option value="{{ cluster }}">cluster {{ cluster }}</option>{% endfor %}</select>';
+
+        return div;
+    }
+
+    clusterOption.addTo(mapSumut);
 
 </script>
 {% include 'base/js.html' %}
