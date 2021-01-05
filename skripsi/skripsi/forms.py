@@ -13,6 +13,7 @@ class FormField(forms.Form):
                                     } 
                                 )   
                             )
+    cluster_button = forms.IntegerField()
 
 class UploadFileForm(forms.Form):
     file = forms.FileField()

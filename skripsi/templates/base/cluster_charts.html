@@ -1,43 +1,100 @@
 <div class="d-flex justify-content-center mt-5">
   
     {% for label in labelCluster %}
-        <button class="btn btn-primary mx-4" data-toggle="modal" data-target="#testModal">Detail Cluster <b>{{label}}</b></button>
+        <button class="btn btn-primary mx-4" data-toggle="modal" name="{{label}}" data-target="#testModal">Detail Cluster <b>{{label}}</b></button>
     {% endfor %}
       
   
     <div class="modal fade" id="testModal" role="dialog">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-xl">
       
         <!-- Modal content-->
-        <div class="modal-content p-2">
-          <div class="modal-header">
+        <div class="modal-content">
+          <!-- <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title"></h4>
-          </div>
-          <div class="modal-body mb-2">
-            
+          </div> -->
+        
+          <div class="modal-body">
+            <h4>Detail Cluster</h4>
             <!-- CHART -->
-            <div class="col-md-12 col-lg-12 mg-t-10">
-                <div class="card mb-5 border-0 shadow">
-                    <div class="card-header">
-                        <h6 class="mg-b-5">Detail Data Cluster</h6>
-                        <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Cluster</h4>
-                    </div>
-            
-                    <div class="card-body">
-                        <div class="chart-container" style="width: 100%; height: 300px;">
-                            <canvas id="chart-cluster-1"></canvas>
+            <div class="row justify-content-around">
+                <div class="col-md-6 col-lg-6 mg-t-10">
+                    <div class="card mb-5 border-0 shadow">
+                        <div class="card-header">
+                            
                         </div>
+                
+                        <div class="card-body">
+                            <div class="chart-container" style="width: 100%; height: 250px;">
+                                <canvas id="chart-cluster-1"></canvas>
+                            </div>
+                        </div>
+                        <!-- <div class="card-footer"></div> -->
                     </div>
-                    <!-- <div class="card-footer"></div> -->
+                </div>
+    
+                <div class="col-md-6 col-lg-6 mg-t-10">
+                    <div class="card mb-5 border-0 shadow">
+                        <div class="card-header">
+                            
+                        </div>
+            
+                        <div class="card-body">
+                            <div class="chart-container" style="width: 100%; height: 250px;">
+                                <canvas id="chart-cluster-2"></canvas>
+                            </div>
+                        </div>
+                        <!-- <div class="card-footer"></div> -->
+                    </div>
+                </div>
+    
+                <div class="col-md-6 col-lg-6 mg-t-10">
+                    <div class="card mb-5 border-0 shadow">
+                        <div class="card-header">
+                            
+                        </div>
+            
+                        <div class="card-body">
+                            <div class="chart-container" style="width: 100%; height: 250px;">
+                                <canvas id="chart-cluster-3"></canvas>
+                            </div>
+                        </div>
+                        <!-- <div class="card-footer"></div> -->
+                    </div>
+                </div>
+    
+                <div class="col-md-6 col-lg-6 mg-t-10">
+                    <div class="card mb-5 border-0 shadow">
+                        <div class="card-header">
+                            
+                        </div>
+            
+                        <div class="card-body">
+                            <div class="chart-container" style="width: 100%; height: 250px;">
+                                <canvas id="chart-cluster-4"></canvas>
+                            </div>
+                        </div>
+                        <!-- <div class="card-footer"></div> -->
+                    </div>
                 </div>
             </div>
+
             <!-- END CHART -->
-            <h4><u>Kesimpulan</u></h4>
-            <h6>Pada cluster <b>NONE</b> memiliki karakteristik kredit dengan sektor pekerjaan <b>NONE</b>, 
+            <div class="px-5">
+                <h4><u>Kesimpulan</u></h4>
+            <!-- <h6>Pada cluster <b>NONE</b> memiliki karakteristik kredit dengan sektor pekerjaan <b>NONE</b>, 
                 banyak membeli objek kendaraan berupa <b>NONE</b>, dengan jangka waktu kredit selama <b>NONE</b> bulan 
                 yang mayoritas berlokasi pada daerah <b>NONE</b>.
-            </h6>
+            </h6> -->
+                <h6>Dengan total elemen sebanyak 23.827 customer dengan variabel dominan
+                    berturut turut adalah variabel 17,10,3,13, dengan nilai dominan yang muncul adalah
+                    1,2,1,2, dengan total kemunculan sebanyak 23.604, 23.274, 22.842, 22.934. Artinya
+                    pada cluster 1 memiliki ciri-ciri karakteristik kredit berupa jenis pekerjaan pada sektor <b>NONE</b>, 
+                    banyak membeli objek kendaraan berupa <b>NONE</b>, jangka waktu kredit selama <b>NONE</b> bulan,
+                    dan mayoritas berlokasi pada daerah <b>NONE</b>.
+                </h6>
+            </div>
                 
           </div>
           <div class="modal-footer">
@@ -52,15 +109,18 @@
 
 {% block script %}
 <script>
+
+    var dataWilayah = {{dictWilayah | safe}};
+
     var ctx = document.getElementById('chart-cluster-1').getContext('2d');
     var color = Chart.helpers.color;
     var configBar = {
         type: 'bar',
         data: {
-            labels: {{labelKendaraan | safe}},
+            labels: Object.keys(dataWilayah),
             datasets: [{
                 label: 'Clusters',
-                data: {{dataKendaraan | safe}},
+                data: Object.values(dataWilayah),
                 backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
                 borderColor: color(window.chartColors.blue),
                 borderWidth: 2,
@@ -92,5 +152,196 @@
     }
     var myChart = new Chart(ctx, configBar);
 </script>
+
+<script>
+
+    var dataPekerjaan = {{dictPekerjaan | safe}};
+    
+    var ctx = document.getElementById('chart-cluster-2').getContext('2d');
+    var color = Chart.helpers.color;
+    var configBar = {
+        type: 'bar',
+        data: {
+            labels: Object.keys(dataPekerjaan),
+            datasets: [{
+                label: 'Clusters',
+                data: Object.values(dataPekerjaan),
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: color(window.chartColors.blue),
+                borderWidth: 2,
+                pointBackgroundColor: '#007bff'
+            }], 
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function(label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        }else{
+                            return label;
+                        }              
+                        }
+                    }
+                }]
+            },
+            responsive : true,
+            maintainAspectRatio : false
+        }
+    }
+    var myChart = new Chart(ctx, configBar);
+
+    //myChart.canvas.parentNode.style.height = '400px';
+</script>
+<script>
+
+    var dataobjekKendaraan = {{dictObjek | safe}};
+    
+    var ctx = document.getElementById('chart-cluster-3').getContext('2d');
+    var color = Chart.helpers.color;
+    var configBar = {
+        type: 'bar',
+        data: {
+            labels: Object.keys(dataobjekKendaraan),
+            datasets: [{
+                label: 'Clusters',
+                data: Object.values(dataobjekKendaraan),
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: color(window.chartColors.blue),
+                borderWidth: 2,
+                pointBackgroundColor: '#007bff'
+            }], 
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function(label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        }else{
+                            return label;
+                        }              
+                        }
+                    }
+                }]
+            },
+            responsive : true,
+            maintainAspectRatio : false
+        }
+    }
+    var myChart = new Chart(ctx, configBar);
+
+    //myChart.canvas.parentNode.style.height = '400px';
+</script>
+<script>
+
+    var datatenorKredit = {{dictTenor | safe}};
+
+    var ctx = document.getElementById('chart-cluster-4').getContext('2d');
+    var color = Chart.helpers.color;
+    var configBar = {
+        type: 'bar',
+        data: {
+            labels: Object.keys(datatenorKredit),
+            datasets: [{
+                label: 'Clusters',
+                data: Object.values(datatenorKredit),
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: color(window.chartColors.blue),
+                borderWidth: 2,
+                pointBackgroundColor: '#007bff'
+            }], 
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function(label) {
+                        if (/\s/.test(label)) {
+                            return label.split(" ");
+                        }else{
+                            return label;
+                        }              
+                        }
+                    }
+                }]
+            },
+            responsive : true,
+            maintainAspectRatio : false
+        }
+    }
+    var myChart = new Chart(ctx, configBar);
+
+    //myChart.canvas.parentNode.style.height = '400px';
+</script>
+<!-- <script>
+    var color = Chart.helpers.color;
+    var stackedDetailChart = {
+			labels: {{labelCluster | safe}},
+			datasets: [{
+                label: 'Kendaraan',
+                backgroundColor: color(window.chartColors.red).alpha(0.7).rgbString(),
+                borderColor: color(window.chartColors.red),
+                stack: 'Stack 0',
+                data: {{dataKendaraan | safe}}
+            }, {
+                label: 'Pekerjaan',
+                backgroundColor: color(window.chartColors.blue).alpha(0.7).rgbString(),
+                borderColor: color(window.chartColors.blue),
+                stack : 'Stack 1',
+                data: {{dataPekerjaan | safe}}
+            }, {
+                label: 'Tenor',
+                backgroundColor: color(window.chartColors.green).alpha(0.7).rgbString(),
+                borderColor: color(window.chartColors.green),
+                stack: 'Stack 2',
+                data: {{dataTenor | safe}}
+            }]
+
+		};
+		window.onload = function() {
+			var ctx = document.getElementById('chart-cluster-1').getContext('2d');
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: stackedDetailChart,
+				options: {
+					title: {
+						display: true,
+						text: 'Chart.js Bar Chart - Stacked'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: false
+					},
+					responsive: true,
+					scales: {
+						xAxes: [{
+							stacked: true,
+						}],
+						yAxes: [{
+							stacked: true
+						}]
+					}
+				}
+			});
+		};
+</script> -->
 {% endblock script %}
     

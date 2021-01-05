@@ -32,7 +32,7 @@
     } */
 </style>
 <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.fullscreen/dist/leaflet.fullscreen.css">
-<div class="container shadow-lg" id="clusterMap" style="height: 500px; width: 100%; float: left; padding: 10px 10px 10px 10px;">
+<div class="container shadow-lg" id="clusterMap" style="height: 550px; width: 100%; float: left; padding: 10px 10px 10px 10px;">
 
 </div>
             
@@ -40,9 +40,11 @@
 
 {% block js %}    
 
-<script src="{%static "geojson/sumatera-utara.geojson" %}"></script>
+<script src="{%static "geojson/map.geojson" %}"></script>
 <script src="https://leaflet.github.io/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js"></script>
 <script>
+
+    var dataKabupaten = {};
 
     const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>';
     // const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -78,16 +80,16 @@
 
     info.update = function (props) {
         this._div.innerHTML = '<h4><b>Cluster Sumatera Utara</b></h4>' +  (props ?
-            '<b>' + props.kabkot + '</b><br />' + props.cartodb_id + ' cluster': 'Hover over a state');
+            '<b>' + props.kabkot + '</b><br />' + dataKabupaten[props.kabkot] + ' data': 'Hover over a state');
     };
 
     info.addTo(mapSumut);
 
     function getColor(c) {
-        return  c < 0  ? '#5F0785' : //ungu
-                c < 1 ? '#0E6843' : //ijo
-                c < 2 ? '#E31A1C' : //merah
-                         '#2F348A' ;
+        return  c <= 1  ? '#5F0785' : //ungu
+                c <= 2 ? '#0E6843' : //ijo
+                c <= 3 ? '#E31A1C' : //merah
+                         'rgba(100, 10, 100, 0.2)' ;//kuning
     }
 
     function style(feature) {
@@ -96,9 +98,9 @@
             opacity: 1,
             color: 'white',
             dashArray: '2',
-            fillOpacity: 0.7,
+            fillOpacity: 0.8,
             // fillColor: getColor(feature.properties.cartodb_id),
-            fillColor: getColor({{labelCluster | safe}}),
+            fillColor: getColor(dataKabupaten[feature.properties.kabkot]),
         };
     }
 
@@ -155,7 +157,7 @@
 			no_of_cluster;
 
 		for (var i = 0; i < grades.length; i++) {
-			no_of_cluster = grades[i];
+            no_of_cluster = grades[i];
 
 			labels.push(
 				'<i style="background:' + getColor(no_of_cluster) + '"></i> ' +
@@ -165,9 +167,36 @@
 
 		div.innerHTML = labels.join('<br> <br>');
 		return div;
-	};
+    };
+    
 
+    //INTENSITAS MASING MASING CLUSTER
+
+    var legend_2 = L.control({position : 'bottomright'})
+
+    legend_2.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 50, 100, 200, 500],
+			labels = ['Intensitas Data'],
+			from, to;
+
+		for (var i = 0; i < grades.length; i++) {
+			from = grades[i];
+			to = grades[i + 1];
+
+			labels.push(
+				'<i style="background:' + getColor(from + 1) + '"></i> ' +
+				from + (to ? '&ndash;' + to : '+'));
+		}
+
+    div.innerHTML = labels.join('<div class="my-2">');
+    return div;
+    };
+
+    legend_2.addTo(mapSumut);
     legend.addTo(mapSumut);
+    
     
     var clusterOption = L.control({position: 'bottomleft'});
 
@@ -175,13 +204,37 @@
         var div = L.DomUtil.create('div','info');
 
         div.innerHTML = '<b>Show Cluster</b>' + '<br/>' 
-        + '<select class="form-control form-control-sm mt-1"> {% for cluster in labelCluster %}<option value="{{ cluster }}">cluster {{ cluster }}</option>{% endfor %}</select>';
+        + '<select class="form-control form-control-sm mt-1" onChange="selectCluster(this);"> <option value="" data-select2-id="0">---</option>{% for cluster in labelCluster %}<option value="{{ cluster }}"> {{ cluster }}</option>{% endfor %}</select>';
 
         return div;
     }
 
     clusterOption.addTo(mapSumut);
 
+</script>
+
+<script>
+    function selectCluster(cluster){
+        if (cluster.value == 1){
+            this.dataKabupaten = {{data1 | safe}};
+            resetHighlight(this);
+        }
+
+        else if(cluster.value == 2){
+            this.dataKabupaten = {{data2 | safe}};
+            resetHighlight(this);
+        }
+
+        else if(cluster.value == 3){
+            this.dataKabupaten = {{data3 | safe}};
+            resetHighlight(this);
+        }
+
+        else {
+            this.dataKabupaten = {};
+            resetHighlight(this);
+        }
+    }
 </script>
 {% include 'base/js.html' %}
 {% endblock js %}

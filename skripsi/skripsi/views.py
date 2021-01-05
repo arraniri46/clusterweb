@@ -28,7 +28,7 @@ def index(request):
     return render(request, 'index.html', context)
 
 def result(request):
-    return render(request, 'result.html')
+    return render(request, 'result.html')   
 
 def charts(request):
     return render(request, 'base/charts.html')
@@ -115,24 +115,24 @@ def dashboard(request):
     #totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
 
     #PARSING DATA PEKERJAAN
-    pekerjaan = pekerjaan.value_counts(sort=False).rename_axis('PEKERJAAN').reset_index(name='totalPekerjaan')
+    pekerjaan = pekerjaan.value_counts().rename_axis('PEKERJAAN').reset_index(name='totalPekerjaan')
     listPekerjaan = pekerjaan['PEKERJAAN'].str.strip().tolist()
     listDataPekerjaan = pekerjaan['totalPekerjaan'].tolist()
 
     #PARSING DATA KENDARAAN
-    objectKendaraan = objectKendaraan.value_counts(sort=False).rename_axis('OBJECT').reset_index(name='totalKendaraan')
+    objectKendaraan = objectKendaraan.value_counts().rename_axis('OBJECT').reset_index(name='totalKendaraan')
     listKendaraan = objectKendaraan['OBJECT'].str.strip().tolist()
     listDataKendaraan = objectKendaraan['totalKendaraan'].tolist()
 
     #PARSING DATA TENOR
-    tenor = tenor.value_counts(sort=False).rename_axis('TENOR').reset_index(name='totalTenor')
+    tenor = tenor.value_counts().rename_axis('TENOR').reset_index(name='totalTenor')
     listTenor = tenor['TENOR'].str.strip().tolist()
     listDataTenor = tenor['totalTenor'].tolist()
 
     # CLUSTERING
     input_cluster = int(request.session.get('jumlah_cluster'))
 
-    kp = KPrototypes(n_clusters=input_cluster, init='random', verbose=2, n_jobs=-1, n_init=5, max_iter=10)
+    kp = KPrototypes(n_clusters=input_cluster, init='Huang', verbose=2, n_jobs=-1, max_iter=10)
     cluster = kp.fit_predict(df, categorical=[0,1,2,3])
     df['cluster'] = cluster+1
 
@@ -143,7 +143,7 @@ def dashboard(request):
 
     # PARSING DATA CLUSTER
     dataCluster = df['cluster'].astype(str)
-    dataCluster = dataCluster.value_counts(sort=False).rename_axis('cluster').reset_index(name='totalCluster')
+    dataCluster = dataCluster.value_counts().rename_axis('cluster').reset_index(name='totalCluster')
     listCluster = dataCluster['cluster'].str.strip().tolist()
     listDataCluster = dataCluster['totalCluster'].tolist()
 
@@ -168,6 +168,24 @@ def dashboard(request):
         allData.append(dict(temp))
 
     # topCluster    
+    data1 = df['KABUPATEN'].where(df['cluster'] == 1).value_counts().to_dict()
+    data2 = df['KABUPATEN'].where(df['cluster'] == 2).value_counts().to_dict()
+    data3 = df['KABUPATEN'].where(df['cluster'] == 3).value_counts().to_dict()
+    
+    columnList = list(df.columns)
+    del columnList[-1]
+
+    dictWilayah = df['KABUPATEN'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+    dictPekerjaan = df['PEKERJAAN'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+    dictObjek = df['OBJECT'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+    dictTenor = df['TENOR'].astype(str).where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+
+    # for i in range(1,max(cluster+2)):
+    #     a = df['KABUPATEN'].astype(str).where(df['cluster'] == i).str.strip().value_counts().to_dict()
+    #     b = df['PEKERJAAN'].astype(str).where(df['cluster'] == i).str.strip().value_counts().to_dict()
+    #     c = df['OBJECT'].astype(str).where(df['cluster'] == i).str.strip().value_counts().to_dict()
+
+
 
     context = {
         'data' : allData,
@@ -185,6 +203,14 @@ def dashboard(request):
         'df_cluster_1' : df_cluster_1,
         'df_cluster_2' : df_cluster_2,
         'clusters' : cluster,
+        'data3' : data3,
+        'data2' : data2,
+        'data1' : data1,
+        'columnName' : columnList,
+        'dictWilayah' : dictWilayah,
+        'dictPekerjaan' : dictPekerjaan,
+        'dictObjek' : dictObjek,
+        'dictTenor' : dictTenor,
     }
     return render(request, 'dashboard.html', context)
 
@@ -193,6 +219,7 @@ def upload(request):
     
     form_field = FormField()
     context = {
+        'title' : str('Home - Upload File'),
         'form_field' : form_field
     }
     if request.method == 'POST':
