@@ -1,11 +1,14 @@
 <div class="d-flex justify-content-center mt-5">
   
-    {% for label in labelCluster %}
-        <button class="btn btn-primary mx-4" data-toggle="modal" name="{{label}}" data-target="#testModal">Detail Cluster <b>{{label}}</b></button>
-    {% endfor %}
+    <form action="{% url 'dashboard' %}" method="post" id="detail_cluster" name="cluster">
+        {% csrf_token %}
+        {% for label in labelCluster %}
+        <button class="btn btn-primary mx-4" data-toggle="modal" name="cluster{{label}}" value="{{label}}" data-target="#testModal">Detail Cluster <b>{{label}}</b></button>
+        {% endfor %}
+    </form>
       
   
-    <div class="modal fade" id="testModal" role="dialog">
+    <div class="modal fade" id="testModal" role="dialog" tabindex="-1">
       <div class="modal-dialog modal-xl">
       
         <!-- Modal content-->
@@ -108,6 +111,35 @@
 
 
 {% block script %}
+<script>
+$(function() {
+    $("#detail_cluster").submit(function(event) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        var friendForm = $(this);
+        // Send the data using post
+        var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
+        // if success:
+        posting.done(function(data) {
+            // success actions, maybe change submit button to 'friend added' or whatever
+            if(document.cluster.cluster1.value == 1){
+                console.log(document.cluster.cluster1.value);
+            }
+
+            else if(document.cluster.cluster1.value == 2){
+                console.log(document.cluster.cluster2.value);
+            }
+                
+            
+        });
+        // if failure:
+        posting.fail(function(data) {
+            // 4xx or 5xx response, alert user about failure
+        });
+    });
+});
+</script>
+
 <script>
 
     var dataWilayah = {{dictWilayah | safe}};
