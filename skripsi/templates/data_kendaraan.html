@@ -71,16 +71,84 @@
         </div><!-- sidebar-container END -->
         
         <!-- MAIN -->
-        <div class="col mt-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="total">{{ total | safe}}</div>
-                        <div class="vendor">{{ label_jenis_kendaraan | safe}}</div>
-                        <div class="data_vendor">{{ data_jenis_kendaraan | safe}}</div>
-                        <div class="totals">{{ df_cluster_0 | safe}}</div>
-                        <div class="vendors">{{ df_cluster_1 | safe}}</div>
-                        <div class="data_vendors">{{ df_cluster_2 | safe}}</div>
+        <div class="col my-3">
+            <div class="container-fluid">
+                <div class="card border-0">
+                    <div class="card-header">
+                        <h2>Statistik Jenis Kendaraan</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="card shadow-lg">
+                                    <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                                        <h4 class="text-light">Total Kendaraan</h4>
+                                    </div>
+                                    <div class="card-body shadow-lg" style="height: 400px;">
+                                        <div class="d-flex justify-content-center mt-5 pt-5">
+                                            <h1 class="display-1 text-dark font-weight-bold">{{ total | safe}}</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-6">
+                                <div class="vendor">
+                                    <div class="row">
+                                        {% for label, data in zipped_kendaraan %}
+                                            <div class="col-sm-4 col-md-2">
+                                                <div class="card border-0 my-1 shadow-lg">
+                                                    <div class="card-header bg-success d-flex justify-content-between align-items-center">
+                                                        <h6 class="text-light font-weight-bold m-0">{{label}}</h6>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-center">
+                                                        <div class="total">
+                                                            <h5 class="font-weight-bold">{{ data }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>                                
+                                </div>
+                            </div>
+                            <div class="col-lg-5 shadow my-5">
+                                <div class="card shadow">
+                                    <div class="card-header bg-danger d-flex justify-content-between align-items-center">
+                                        <h4 class="text-light font-weight-bold m-0">Doughnut Chart</h4>
+                                        <div class="dropdown">
+                                            <button class="btn btn-link btn-sm dropdown-toogle" data-toogle="dropdown" aria-expanded="false" type="button">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                                                <p class="text-center dropdown-header">dropdown</p>
+                                                <a href="" class="dropdown-item">action</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="canvas-holder justify-content-center" style="height:400px; width:100%">
+                                            <canvas id="chart-kendaraan-doughnut"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-7 my-5">
+                                <div class="card shadow">
+                                        <h6 class="bg-info text-light py-2 pl-2">Data Grafik Kendaraan</h6>
+                                        <div class="card-header ">
+                                            <h4 class="font-weight-bold m-0">Persebaran Data</h4>
+                                        </div>
+                            
+                                        <div class="card-body">
+                                            <div class="chart-container" style="width: 100%; height: 400px;">
+                                                <canvas id="chart-1"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="card-footer"></div> -->
+                                    </div>
+                            </div>
+                            <div class="col-md-6"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,6 +159,106 @@
 
 <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
+{% block script %}
+    <script>
+        var ctx = document.getElementById('chart-kendaraan-doughnut').getContext('2d');
 
+        var randomScalingFactor = function() {
+			return Math.round(Math.random() * 100);
+		};
+
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(231,233,237)'
+        };
+
+        var colorArray = ["#63b598", "#ce7d78", "#ea9e70", "#a48a9e", "#c6e1e8", "#648177" ,"#0d5ac1" ,
+                    "#f205e6" ,"#1c0365" ,"#14a9ad" ,"#4ca2f9" ,"#a4e43f" ,"#d298e2" ,"#6119d0",
+                    "#d2737d" ,"#c0a43c" ,"#f2510e" ,"#651be6" ,"#79806e" ,"#61da5e" ,"#cd2f00" ,
+                    "#9348af" ,"#01ac53" ,"#c5a4fb" ,"#996635","#b11573" ,"#4bb473" ,"#75d89e"];
+
+        var config = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: {{ data_jenis_kendaraan | safe}},
+                    backgroundColor: colorArray,
+                    // [
+                    //         window.chartColors.red,
+                    //         window.chartColors.orange,
+                    //         window.chartColors.yellow,
+                    //         window.chartColors.green,
+                    //         window.chartColors.blue,
+                    //         window.chartColors.purple,
+                    //         window.chartColors.grey,
+                    // ],
+                    label: 'Vendor'
+                }],
+                labels: {{ label_jenis_kendaraan | safe}}
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio : false,
+                legend: {
+                    position : 'right',
+                    align : 'start'
+                }
+            }
+        };
+
+        // window.onload = function() {
+            
+        window.myPie = new Chart(ctx, config);
+// };
+    </script>
+
+    <script>
+        var ctx = document.getElementById('chart-1').getContext('2d');
+        var color = Chart.helpers.color;
+
+        var configBar = {
+            type: 'bar',
+            data: {
+                labels: {{label_jenis_kendaraan | safe}},
+                datasets: [{
+                    label: 'Clusters',
+                    data: {{data_jenis_kendaraan | safe}},
+                    backgroundColor: color(window.chartColors.blue).alpha(0.8).rgbString(),
+                    borderColor: color(window.chartColors.blue),
+                    borderWidth: 2,
+                    pointBackgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback: function(label) {
+                            if (/\s/.test(label)) {
+                                return label.split(" ");
+                            }else{
+                                return label;
+                            }              
+                            }
+                        }
+                    }]
+                },
+                responsive : true,
+                maintainAspectRatio : false
+            }
+        }
+        var myChart = new Chart(ctx, configBar);
+    </script>
+{% endblock script %}
 </body>
 </html>

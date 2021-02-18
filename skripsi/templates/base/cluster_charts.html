@@ -1,11 +1,10 @@
 <div class="d-flex justify-content-center mt-5">
   
-    <form action="{% url 'dashboard' %}" method="post" id="detail_cluster" name="cluster">
-        {% csrf_token %}
+    <!-- <form action="{% url 'dashboard' %}" method="post" id="detail_cluster" name="cluster"> -->
         {% for label in labelCluster %}
-        <button class="btn btn-primary mx-4" data-toggle="modal" name="cluster{{label}}" value="{{label}}" data-target="#testModal">Detail Cluster <b>{{label}}</b></button>
+        <button class="btn btn-primary mx-4" data-toggle="modal" name="cluster" value="{{label}}" data-target="#testModal">Detail Cluster <b>{{label}}</b></button>
         {% endfor %}
-    </form>
+    <!-- </form> -->
       
   
     <div class="modal fade" id="testModal" role="dialog" tabindex="-1">
@@ -22,8 +21,8 @@
             <h4>Detail Cluster</h4>
             <!-- CHART -->
             <div class="row justify-content-around">
-                <div class="col-md-6 col-lg-6 mg-t-10">
-                    <div class="card mb-5 border-0 shadow">
+                <div class="col-md-6 col-lg-6 mg-t-5">
+                    <div class="card mb-2 border-0 shadow">
                         <div class="card-header">
                             
                         </div>
@@ -38,7 +37,7 @@
                 </div>
     
                 <div class="col-md-6 col-lg-6 mg-t-10">
-                    <div class="card mb-5 border-0 shadow">
+                    <div class="card mb-2 border-0 shadow">
                         <div class="card-header">
                             
                         </div>
@@ -53,7 +52,7 @@
                 </div>
     
                 <div class="col-md-6 col-lg-6 mg-t-10">
-                    <div class="card mb-5 border-0 shadow">
+                    <div class="card mb-3 border-0 shadow">
                         <div class="card-header">
                             
                         </div>
@@ -68,7 +67,7 @@
                 </div>
     
                 <div class="col-md-6 col-lg-6 mg-t-10">
-                    <div class="card mb-5 border-0 shadow">
+                    <div class="card mb-3 border-0 shadow">
                         <div class="card-header">
                             
                         </div>
@@ -84,19 +83,20 @@
             </div>
 
             <!-- END CHART -->
-            <div class="px-5">
-                <h4><u>Kesimpulan</u></h4>
+            <div class="px-5 mt-2">
+                <h4 style="font-family:verdana;"><u>Summary</u></h4>
             <!-- <h6>Pada cluster <b>NONE</b> memiliki karakteristik kredit dengan sektor pekerjaan <b>NONE</b>, 
                 banyak membeli objek kendaraan berupa <b>NONE</b>, dengan jangka waktu kredit selama <b>NONE</b> bulan 
                 yang mayoritas berlokasi pada daerah <b>NONE</b>.
             </h6> -->
-                <h6>Dengan total elemen sebanyak 23.827 customer dengan variabel dominan
-                    berturut turut adalah variabel 17,10,3,13, dengan nilai dominan yang muncul adalah
-                    1,2,1,2, dengan total kemunculan sebanyak 23.604, 23.274, 22.842, 22.934. Artinya
-                    pada cluster 1 memiliki ciri-ciri karakteristik kredit berupa jenis pekerjaan pada sektor <b>NONE</b>, 
-                    banyak membeli objek kendaraan berupa <b>NONE</b>, jangka waktu kredit selama <b>NONE</b> bulan,
-                    dan mayoritas berlokasi pada daerah <b>NONE</b>.
+                <h6 style="font-family:verdana;">Dengan total elemen sebanyak <b><a id="total"></a></b> customer pada cluster <b><a id="choosen_cluster"></a></b> memiliki karakteristik diantaranya : <br>
                 </h6>
+                <ul style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                    <li>Mayoritas pekerjaan dengan total kemunculan berturut yaitu pada sektor <b><a id="datapek"></a></b>, <br></li>
+                    <li>Banyak membeli objek kendaraan berupa <b><a id="dataobj"></a></b>, <br></li>
+                    <li>Jangka waktu kredit selama <b><a id="dataten"></a></b> bulan, <br></li>
+                    <li>Dan mayoritas berlokasi pada daerah <b><a id="datakab"></a></b>.</li>
+                </ul>
             </div>
                 
           </div>
@@ -112,216 +112,287 @@
 
 {% block script %}
 <script>
-$(function() {
-    $("#detail_cluster").submit(function(event) {
-        // Stop form from submitting normally
-        event.preventDefault();
-        var friendForm = $(this);
-        // Send the data using post
-        var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
-        // if success:
-        posting.done(function(data) {
-            // success actions, maybe change submit button to 'friend added' or whatever
-            if(document.cluster.cluster1.value == 1){
-                console.log(document.cluster.cluster1.value);
-            }
 
-            else if(document.cluster.cluster1.value == 2){
-                console.log(document.cluster.cluster2.value);
-            }
+
+
+// $(function() {
+//     $("#detail_cluster").submit(function(event) {
+//         // Stop form from submitting normally
+//         event.preventDefault();
+//         var friendForm = $(this);
+//         // Send the data using post
+//         var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
+//         // if success:
+//         posting.done(function(data) {
+//             // success actions, maybe change submit button to 'friend added' or whatever
+//             if(document.cluster.cluster.value != null)
+//                 console.log(document.cluster.cluster.value);
+            
                 
             
-        });
-        // if failure:
-        posting.fail(function(data) {
-            // 4xx or 5xx response, alert user about failure
-        });
+//         });
+//         // if failure:
+//         posting.fail(function(data) {
+//             // 4xx or 5xx response, alert user about failure
+//         });
+//     });
+// });
+    var total_data = {{total | safe}};
+    
+
+    var kabupaten_cluster = {{kab_cluster | safe}};
+    var pekerjaan_cluster = {{pek_cluster | safe}};
+    var object_cluster = {{obj_cluster | safe}};
+    var tenor_cluster = {{ten_cluster | safe}};
+
+    // var dataten = Object.keys(datatenorKredit);
+    // document.getElementById("dataten").innerHTML = dataten;
+
+    // var dataobj = Object.keys(dataobjekKendaraan);
+    // document.getElementById("dataobj").innerHTML = dataobj;
+    
+    
+
+    
+</script>
+
+<script>
+
+   
+
+    var myChart;
+
+    $("button").click(function() {
+        var fired_button = $(this).val()-1;
+        var dataWilayah = kabupaten_cluster[fired_button];
+
+        var total_data_cluster = total_data[fired_button];
+
+        var ctx = document.getElementById('chart-cluster-1').getContext('2d');
+        var color = Chart.helpers.color;
+        var configBar = {
+            type: 'bar',
+            data: {
+                labels: Object.keys(dataWilayah),
+                datasets: [{
+                    label: 'WILAYAH',
+                    data: Object.values(dataWilayah),
+                    backgroundColor: color(window.chartColors.blue).alpha(0.8).rgbString(),
+                    borderColor: color(window.chartColors.blue),
+                    borderWidth: 2,
+                    pointBackgroundColor: '#007bff'
+                }], 
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback: function(label) {
+                            if (/\s/.test(label)) {
+                                return label.split(" ");
+                            }else{
+                                return label;
+                            }              
+                            }
+                        }
+                    }]
+                },
+                responsive : true,
+                maintainAspectRatio : false
+            }
+        }
+
+        // myChart.destroy();
+        myChart = new Chart(ctx, configBar);
+        
+
+        var totaldata = Object.values(total_data_cluster);
+        document.getElementById("total").innerHTML = totaldata.reduce((a, b) => a + b, 0);
+
+        var choosen_cluster = fired_button + 1;
+        document.getElementById("choosen_cluster").innerHTML = choosen_cluster;
+
+        var datakab = Object.keys(dataWilayah);
+        document.getElementById("datakab").innerHTML = datakab;
+
+
     });
-});
+        
+            
 </script>
 
 <script>
+// var myChart2;
 
-    var dataWilayah = {{dictWilayah | safe}};
+    $("button").click(function() {
+        var fired_button = $(this).val()-1;
+        var dataPekerjaan = pekerjaan_cluster[fired_button];
 
-    var ctx = document.getElementById('chart-cluster-1').getContext('2d');
-    var color = Chart.helpers.color;
-    var configBar = {
-        type: 'bar',
-        data: {
-            labels: Object.keys(dataWilayah),
-            datasets: [{
-                label: 'Clusters',
-                data: Object.values(dataWilayah),
-                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                borderColor: color(window.chartColors.blue),
-                borderWidth: 2,
-                pointBackgroundColor: '#007bff'
-            }], 
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        callback: function(label) {
-                        if (/\s/.test(label)) {
-                            return label.split(" ");
-                        }else{
-                            return label;
-                        }              
-                        }
-                    }
-                }]
+        var ctx = document.getElementById('chart-cluster-2').getContext('2d');
+        var color = Chart.helpers.color;
+        var configBar = {
+            type: 'bar',
+            data: {
+                labels: Object.keys(dataPekerjaan),
+                datasets: [{
+                    label: 'PEKERJAAN',
+                    data: Object.values(dataPekerjaan),
+                    backgroundColor: color(window.chartColors.red).alpha(0.8).rgbString(),
+                    borderColor: color(window.chartColors.red),
+                    borderWidth: 2,
+                    pointBackgroundColor: '#007bff'
+                }], 
             },
-            responsive : true,
-            maintainAspectRatio : false
-        }
-    }
-    var myChart = new Chart(ctx, configBar);
-</script>
-
-<script>
-
-    var dataPekerjaan = {{dictPekerjaan | safe}};
-    
-    var ctx = document.getElementById('chart-cluster-2').getContext('2d');
-    var color = Chart.helpers.color;
-    var configBar = {
-        type: 'bar',
-        data: {
-            labels: Object.keys(dataPekerjaan),
-            datasets: [{
-                label: 'Clusters',
-                data: Object.values(dataPekerjaan),
-                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                borderColor: color(window.chartColors.blue),
-                borderWidth: 2,
-                pointBackgroundColor: '#007bff'
-            }], 
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        callback: function(label) {
-                        if (/\s/.test(label)) {
-                            return label.split(" ");
-                        }else{
-                            return label;
-                        }              
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
                         }
-                    }
-                }]
-            },
-            responsive : true,
-            maintainAspectRatio : false
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback: function(label) {
+                            if (/\s/.test(label)) {
+                                return label.split(" ");
+                            }else{
+                                return label;
+                            }              
+                            }
+                        }
+                    }]
+                },
+                responsive : true,
+                maintainAspectRatio : false
+            }
         }
-    }
-    var myChart = new Chart(ctx, configBar);
+        
+        // myChart.destroy();
+        myChart = new Chart(ctx, configBar);
+        myChart.update();
+        
 
-    //myChart.canvas.parentNode.style.height = '400px';
+        var datapek = Object.keys(dataPekerjaan);
+        document.getElementById("datapek").innerHTML = datapek;
+
+    });
+
+   
 </script>
 <script>
 
-    var dataobjekKendaraan = {{dictObjek | safe}};
-    
-    var ctx = document.getElementById('chart-cluster-3').getContext('2d');
-    var color = Chart.helpers.color;
-    var configBar = {
-        type: 'bar',
-        data: {
-            labels: Object.keys(dataobjekKendaraan),
-            datasets: [{
-                label: 'Clusters',
-                data: Object.values(dataobjekKendaraan),
-                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                borderColor: color(window.chartColors.blue),
-                borderWidth: 2,
-                pointBackgroundColor: '#007bff'
-            }], 
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        callback: function(label) {
-                        if (/\s/.test(label)) {
-                            return label.split(" ");
-                        }else{
-                            return label;
-                        }              
-                        }
-                    }
-                }]
-            },
-            responsive : true,
-            maintainAspectRatio : false
-        }
-    }
-    var myChart = new Chart(ctx, configBar);
+   $("button").click(function() {
+        var fired_button = $(this).val()-1;
+        var dataObject = object_cluster[fired_button];
 
-    //myChart.canvas.parentNode.style.height = '400px';
+        var ctx = document.getElementById('chart-cluster-3').getContext('2d');
+        var color = Chart.helpers.color;
+        var configBar = {
+            type: 'bar',
+            data: {
+                labels: Object.keys(dataObject),
+                datasets: [{
+                    label: 'OBJECT',
+                    data: Object.values(dataObject),
+                    backgroundColor: color(window.chartColors.yellow).alpha(0.8).rgbString(),
+                    borderColor: color(window.chartColors.yellow),
+                    borderWidth: 2,
+                    pointBackgroundColor: '#007bff'
+                }], 
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback: function(label) {
+                            if (/\s/.test(label)) {
+                                return label.split(" ");
+                            }else{
+                                return label;
+                            }              
+                            }
+                        }
+                    }]
+                },
+                responsive : true,
+                maintainAspectRatio : false
+            }
+        }
+        
+        // myChart.destroy();
+        myChart = new Chart(ctx, configBar);
+        myChart.update();
+        
+
+        var dataobj = Object.keys(dataObject);
+        document.getElementById("dataobj").innerHTML = dataobj;
+
+    });
 </script>
 <script>
 
-    var datatenorKredit = {{dictTenor | safe}};
+$("button").click(function() {
+        var fired_button = $(this).val()-1;
+        var dataTenor = tenor_cluster[fired_button];
 
-    var ctx = document.getElementById('chart-cluster-4').getContext('2d');
-    var color = Chart.helpers.color;
-    var configBar = {
-        type: 'bar',
-        data: {
-            labels: Object.keys(datatenorKredit),
-            datasets: [{
-                label: 'Clusters',
-                data: Object.values(datatenorKredit),
-                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                borderColor: color(window.chartColors.blue),
-                borderWidth: 2,
-                pointBackgroundColor: '#007bff'
-            }], 
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        callback: function(label) {
-                        if (/\s/.test(label)) {
-                            return label.split(" ");
-                        }else{
-                            return label;
-                        }              
-                        }
-                    }
-                }]
+        var ctx = document.getElementById('chart-cluster-4').getContext('2d');
+        var color = Chart.helpers.color;
+        var configBar = {
+            type: 'bar',
+            data: {
+                labels: Object.keys(dataTenor),
+                datasets: [{
+                    label: 'JANGKA WAKTU',
+                    data: Object.values(dataTenor),
+                    backgroundColor: color(window.chartColors.green).alpha(0.8).rgbString(),
+                    borderColor: color(window.chartColors.green),
+                    borderWidth: 2,
+                    pointBackgroundColor: '#007bff'
+                }], 
             },
-            responsive : true,
-            maintainAspectRatio : false
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback: function(label) {
+                            if (/\s/.test(label)) {
+                                return label.split(" ");
+                            }else{
+                                return label;
+                            }              
+                            }
+                        }
+                    }]
+                },
+                responsive : true,
+                maintainAspectRatio : false
+            }
         }
-    }
-    var myChart = new Chart(ctx, configBar);
+        
+        // myChart.destroy();
+        myChart = new Chart(ctx, configBar);
+        myChart.update();
+        
 
-    //myChart.canvas.parentNode.style.height = '400px';
+        var dataten = Object.keys(dataTenor);
+        document.getElementById("dataten").innerHTML = dataten;
+
+    });
 </script>
 <!-- <script>
     var color = Chart.helpers.color;

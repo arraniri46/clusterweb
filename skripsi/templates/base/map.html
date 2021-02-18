@@ -70,6 +70,17 @@
     //const indokab = L.geoJson(sumateraUtara).addTo(mymap);
 
     // control that shows state info on hover
+
+    // mapSumut.createPane('labels');
+    // mapSumut.getPane('labels').style.zIndex = 650;
+    // mapSumut.getPane('labels').style.pointerEvents = 'none';
+    
+    // geojson.eachLayer(function (layer) {
+    // layer.bindPopup(layer.feature.properties.kabkot);
+    // });
+
+    // mapSumut.fitBounds(geojson.getBounds());
+
 	var info = L.control();
 
     info.onAdd = function (map) {
@@ -92,6 +103,15 @@
                          'rgba(100, 10, 100, 0.2)' ;//kuning
     }
 
+    function getColor2(d) {
+        return  d > 250  ? '#BD0026' :
+                d > 100  ? '#E31A1C' :
+                d > 50  ? '#FC4E2A' :
+                d > 25   ? '#FD8D3C' :
+                d > 0   ? '#FED976' :
+                        'rgba(100, 10, 100, 0.2)';
+    }
+
     function style(feature) {
         return {
             weight: 2,
@@ -101,6 +121,18 @@
             fillOpacity: 0.8,
             // fillColor: getColor(feature.properties.cartodb_id),
             fillColor: getColor(dataKabupaten[feature.properties.kabkot]),
+        };
+    }
+
+    function style2(feature) {
+        return {
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '2',
+            fillOpacity: 0.8,
+            // fillColor: getColor(feature.properties.cartodb_id),
+            fillColor: getColor2(dataKabupaten[feature.properties.kabkot]),
         };
     }
 
@@ -123,9 +155,14 @@
     }
 
     var geojson;
+    var geojson2;
 
     function resetHighlight(e) {
         geojson.resetStyle(e.target);
+    }
+
+    function resetHighlight(e) {
+        geojson2.resetStyle(e.target);
     }
 
     function zoomToFeature(e) {
@@ -142,6 +179,11 @@
 
     geojson = L.geoJson(sumateraUtara, {
 		style: style,
+		onEachFeature: onEachFeature
+	}).addTo(mapSumut);
+
+    geojson2 = L.geoJson(sumateraUtara, {
+		style: style2,
 		onEachFeature: onEachFeature
 	}).addTo(mapSumut);
 
@@ -177,17 +219,17 @@
     legend_2.onAdd = function (map) {
 
         var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 50, 100, 200, 500],
+			grades = [0, 25, 50, 100, 250],
 			labels = ['Intensitas Data'],
 			from, to;
 
 		for (var i = 0; i < grades.length; i++) {
-			from = grades[i];
-			to = grades[i + 1];
+			// from = grades[i];
+			// to = grades[i + 1];
 
 			labels.push(
-				'<i style="background:' + getColor(from + 1) + '"></i> ' +
-				from + (to ? '&ndash;' + to : '+'));
+				'<i style="background:' + getColor2(grades[i] + 1) + '"></i> ' +
+				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+'));
 		}
 
     div.innerHTML = labels.join('<div class="my-2">');

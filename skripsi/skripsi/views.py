@@ -46,10 +46,13 @@ def dataKendaraan(request):
     list_jenis_kendaraan = jenis_kendaraan['OBJECT'].str.strip().tolist()
     data_jenis_kendaraan = jenis_kendaraan['total_object_kendaraan'].tolist()
 
+    zipped_kendaraan = zip(list_jenis_kendaraan, data_jenis_kendaraan)
+
     context = {
         'total' : total_kendaraan,
         'label_jenis_kendaraan' : list_jenis_kendaraan,
         'data_jenis_kendaraan' : data_jenis_kendaraan,
+        'zipped_kendaraan' : zipped_kendaraan,
     }
 
     return render(request, 'data_kendaraan.html', context)
@@ -104,15 +107,24 @@ def dashboard(request):
     # df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR','cluster']]
 
     df = df[['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
-    df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
+    # df2 = df[['PEKERJAAN', 'OBJECT', 'TENOR', 'OTR']]
 
-    pekerjaan = df['PEKERJAAN']
+    #INISIALISASI DATA AWAL
+    wilayah = df['KABUPATEN']
+    pekerjaan = df['PEKERJAAN'][~df['PEKERJAAN'].isin(['-'])]
     objectKendaraan = df['OBJECT']
     tenor = df['TENOR'].astype(str)
 
     #dataAkhir = pd.DataFrame(df['cluster'].value_counts())
     #labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
     #totalPekerjaan = pd.DataFrame(data = df['PEKERJAAN'].value_counts(sort=False).tolist(), columns=['total'])
+
+    #PARSING DATA WILAYAH
+    wilayah = wilayah.value_counts().rename_axis('KABUPATEN').reset_index(name='totalKabupaten')
+    listWilayah = wilayah['KABUPATEN'].str.strip().tolist()
+    # listKabupaten.sort()
+    listDataWilayah = wilayah['totalKabupaten'].tolist()
+    # listDataKabupaten.sort()
 
     #PARSING DATA PEKERJAAN
     pekerjaan = pekerjaan.value_counts().rename_axis('PEKERJAAN').reset_index(name='totalPekerjaan')
@@ -151,9 +163,9 @@ def dashboard(request):
     dataCluster = df['cluster'].astype(str)
     dataCluster = dataCluster.value_counts().rename_axis('cluster').reset_index(name='totalCluster')
     listCluster = dataCluster['cluster'].str.strip().tolist()
-    # listCluster.sort()
+    listCluster = sorted(listCluster)
     listDataCluster = dataCluster['totalCluster'].tolist()
-    # listDataCluster.sort()
+    listDataCluster = sorted(listDataCluster)
 
     # PARSING DATA CLUSTER MAP
     df_cluster_0 = df.loc[df['cluster'] == 0]
@@ -183,10 +195,10 @@ def dashboard(request):
     columnList = list(df.columns)
     del columnList[-1]
 
-    dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
-    dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
-    dictObjek_1 = df['OBJECT'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
-    dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    # dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    # dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    # dictObjek_1 = df['OBJECT'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    # dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
 
     # dictWilayah_2 = df['KABUPATEN'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
     # dictPekerjaan_2 = df['PEKERJAAN'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
@@ -198,25 +210,48 @@ def dashboard(request):
     # dictObjek_3 = df['OBJECT'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
     # dictTenor_3 = df['TENOR'].astype(str).where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
 
-    if request.method == 'POST':
-        if request.POST.get('1'):
-            dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
-            dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
-            dictObjek_1 = df['OBJECT'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
-            dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    # if request.method == 'POST':
+    #     if request.POST.get('1'):
+    #         dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictObjek_1 = df['OBJECT'].where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 1).str.strip().value_counts().iloc[0:3].to_dict()
 
-        elif request.POST.get('2'):
-            dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
-            dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
-            dictObjek_1 = df['OBJECT'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
-            dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
+    #     elif request.POST.get('2'):
+    #         dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictObjek_1 = df['OBJECT'].where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 2).str.strip().value_counts().iloc[0:3].to_dict()
 
-        elif request.POST.get('3'):
-            dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
-            dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
-            dictObjek_1 = df['OBJECT'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
-            dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+    #     elif request.POST.get('3'):
+    #         dictWilayah_1 = df['KABUPATEN'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictPekerjaan_1 = df['PEKERJAAN'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictObjek_1 = df['OBJECT'].where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
+    #         dictTenor_1 = df['TENOR'].astype(str).where(df['cluster'] == 3).str.strip().value_counts().iloc[0:3].to_dict()
 
+    kab_cluster = []
+    pek_cluster = []
+    obj_cluster = []
+    ten_cluster = []
+    total_setiap_cluster = []
+
+    for i in range(1,max(cluster+2)):
+        a = df['KABUPATEN'].astype(str).where(df['cluster'] == i).str.strip().value_counts().to_dict()
+        b = df['PEKERJAAN'].astype(str).where(df['cluster'] == i).str.strip().value_counts().to_dict()
+        c = df['OBJECT'].astype(str).where(df['cluster'] == i).str.strip().value_counts().to_dict()
+        d = df['TENOR'].astype(str).where(df['cluster'] == i).str.strip().value_counts().to_dict()
+        aa = dict(list(a.items())[0: 3])
+        bb = dict(list(b.items())[0: 3])
+        cc = dict(list(c.items())[0: 3])
+        dd = dict(list(d.items())[0: 2])
+
+        total_data = dict(list(a.items()))
+
+        kab_cluster.append(aa)
+        pek_cluster.append(bb)
+        obj_cluster.append(cc)
+        ten_cluster.append(dd)
+        total_setiap_cluster.append(total_data)
 
 
     # for i in range(1,max(cluster+2)):
@@ -228,6 +263,8 @@ def dashboard(request):
         'pekerjaan' : pekerjaan,
         'labelPekerjaan' : listPekerjaan,
         'dataPekerjaan' : listDataPekerjaan,
+        'labelWilayah' : listWilayah,
+        'wilayah' : listDataWilayah,
         'labelKendaraan' : listKendaraan,
         'dataKendaraan' : listDataKendaraan,
         'labelTenor' : listTenor,
@@ -243,10 +280,10 @@ def dashboard(request):
         'data2' : data2,
         'data1' : data1,
         'columnName' : columnList,
-        'dictWilayah' : dictWilayah_1,
-        'dictPekerjaan' : dictPekerjaan_1,
-        'dictObjek' : dictObjek_1,
-        'dictTenor' : dictTenor_1,
+        # 'dictWilayah' : dictWilayah_1,
+        # 'dictPekerjaan' : dictPekerjaan_1,
+        # 'dictObjek' : dictObjek_1,
+        # 'dictTenor' : dictTenor_1,
         # 'dictWilayah' : dictWilayah_2,
         # 'dictPekerjaan' : dictPekerjaan_2,
         # 'dictObjek' : dictObjek_2,
@@ -255,6 +292,11 @@ def dashboard(request):
         # 'dictPekerjaan' : dictPekerjaan_3,
         # 'dictObjek' : dictObjek_3,
         # 'dictTenor' : dictTenor_3,
+        'kab_cluster' : kab_cluster,
+        'pek_cluster' : pek_cluster,
+        'obj_cluster' : obj_cluster,
+        'ten_cluster' : ten_cluster,
+        'total' : total_setiap_cluster,
        
     }
     return render(request, 'dashboard.html', context)

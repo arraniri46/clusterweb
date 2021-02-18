@@ -1,4 +1,8 @@
 from django import forms
+# from .validators import FileTypeValidator
+# from django.core.validators import FileExtensionValidator
+# from upload_validator import FileTypeValidator
+from django.core.validators import FileExtensionValidator
 
 class FormField(forms.Form):
     jumlah_cluster = forms.IntegerField(
@@ -15,4 +19,4 @@ class FormField(forms.Form):
                             )
 
 class UploadFileForm(forms.Form):
-    file = forms.FileField()
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['xlsx', 'xls'])])

@@ -20,18 +20,19 @@
         type: 'doughnut',
         data: {
             datasets: [{
-                data: {{dataKendaraan | safe}},
+                data: {{dataCluster | safe}},
                 backgroundColor: [
                         window.chartColors.red,
+                        window.chartColors.green,
 						window.chartColors.orange,
-						window.chartColors.yellow,
-						window.chartColors.green,
-						window.chartColors.blue,
                         window.chartColors.purple,
+						window.chartColors.yellow,
+                        window.chartColors.blue,
+                        
                 ],
                 label: 'Kendaraan'
             }],
-            labels: {{labelKendaraan | safe}}
+            labels: {{labelCluster| safe}}
         },
         options: {
             responsive: true,

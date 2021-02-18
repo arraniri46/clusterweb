@@ -65,7 +65,7 @@
         </div>
     </div>   
 
-    <div class="col-md-9 mx-auto">
+    <!-- <div class="col-md-9 mx-auto">
         <div class="card mb-5 border-0 shadow">
             <div class="card-header">
                 <h6 class="mg-b-5">Data Grafik Gabungan</h6>
@@ -77,9 +77,9 @@
                     <canvas id="chart-5"></canvas>
                 </div>
             </div>
-            <!-- <div class="card-footer"></div> -->
+            <div class="card-footer"></div>
         </div>
-    </div>
+    </div> -->
 </div>
     
 <script>
@@ -92,7 +92,7 @@
             datasets: [{
                 label: 'Clusters',
                 data: {{dataCluster | safe}},
-                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                backgroundColor: color(window.chartColors.blue).alpha(0.7).rgbString(),
                 borderColor: color(window.chartColors.blue),
                 borderWidth: 2,
                 pointBackgroundColor: '#007bff'
@@ -136,7 +136,7 @@
             datasets: [{
                 label: 'Kendaraan',
                 data: {{dataKendaraan | safe}},
-                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                backgroundColor: color(window.chartColors.red).alpha(0.7).rgbString(),
                 borderColor: color(window.chartColors.red),
                 borderWidth: 2,
                 pointBackgroundColor: '#007bff'
@@ -183,7 +183,7 @@
             datasets: [{
                 label: 'Total Pekerjaan',
                 data: {{dataPekerjaan | safe}},
-                backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                backgroundColor: color(window.chartColors.green).alpha(0.7).rgbString(),
                 borderColor: color(window.chartColors.green),
                 borderWidth: 2,
                 pointBackgroundColor: '#007bff'
@@ -228,7 +228,7 @@
             datasets: [{
                 label: 'Tenor',
                 data: {{dataTenor | safe}},
-                backgroundColor: color(window.chartColors.orange).alpha(0.5).rgbString(),
+                backgroundColor: color(window.chartColors.orange).alpha(0.7).rgbString(),
                 borderColor: color(window.chartColors.orange),
                 borderWidth: 2,
                 pointBackgroundColor: '#007bff'
@@ -263,7 +263,7 @@
     //myChart.canvas.parentNode.style.height = '400px';
 </script>
 
-<script>
+<!-- <script>
     var color = Chart.helpers.color;
         
     var barChartData = {
@@ -325,4 +325,4 @@
     //     });
     //     window.myBar.update();
     // });
-</script>
+</script> -->
