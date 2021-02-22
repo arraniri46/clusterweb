@@ -13,6 +13,10 @@ import json
 import random
 import xlrd
 import matplotlib.pyplot as plt 
+import io
+import urllib, base64
+from pycorrcat.pycorrcat import plot_corr, corr_matrix
+import seaborn as sns
 
 from .forms import FormField, UploadFileForm
 
@@ -150,7 +154,7 @@ def dashboard(request):
     # CLUSTERING
     input_cluster = int(request.session.get('jumlah_cluster'))
 
-    kp = KPrototypes(n_clusters=input_cluster, init='Huang', verbose=2, n_jobs=-1, max_iter=10, random_state=42)
+    kp = KPrototypes(n_clusters=input_cluster, init='Cao', verbose=2, n_jobs=-1, max_iter=50, random_state=42)
     cluster = kp.fit_predict(df, categorical=[0,1,2,3])
     df['cluster'] = cluster+1
 
@@ -256,6 +260,25 @@ def dashboard(request):
 
     # for i in range(1,max(cluster+2)):
     
+    # correlation_matrix = corr_matrix(df, ['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR'])
+    # corrmat = plot_corr(df, ['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR'])
+
+    # correlation_matrix = corr_matrix(df, ['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR'])
+    # snspng = sns.heatmap(correlation_matrix, annot=True)
+    # fig = snspng.get_figure()
+    # #convert graph into dtring buffer and then we convert 64 bit code into image
+    # buffer = io.BytesIO()
+    # fig.savefig(buffer, format='png')
+    # buffer.seek(0)
+    # img_png = buffer.getvalue()
+    # string = base64.b64encode(img_png)
+    # string = string.decode('utf-8')
+    # # uri =  urllib.parse.quote(string)
+    # buffer.close()
+
+
+    
+    
 
 
     context = {
@@ -297,6 +320,7 @@ def dashboard(request):
         'obj_cluster' : obj_cluster,
         'ten_cluster' : ten_cluster,
         'total' : total_setiap_cluster,
+        # 'corr_matrix' : string,
        
     }
     return render(request, 'dashboard.html', context)

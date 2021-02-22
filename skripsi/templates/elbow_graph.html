@@ -201,7 +201,18 @@
                     }]
                 },
                 responsive : true,
-                maintainAspectRatio : false
+                maintainAspectRatio : false,
+                plugins: {
+                datalabels: {
+                    formatter: Math.round,
+                    anchor: 'end',
+                    align: 'top',
+                    font: {
+                    weight: 'bold',
+                    size: 1
+                    }
+                }
+            }
             }
         }
         var myChart = new Chart(ctx, configBar);

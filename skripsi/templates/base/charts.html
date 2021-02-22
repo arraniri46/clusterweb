@@ -83,6 +83,17 @@
 </div>
     
 <script>
+
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(231,233,237)'
+    };
+
     var ctx = document.getElementById('chart-1').getContext('2d');
     var color = Chart.helpers.color;
     var configBar = {
@@ -118,7 +129,17 @@
                 }]
             },
             responsive : true,
-            maintainAspectRatio : false
+            maintainAspectRatio : false,
+            plugins: {
+                datalabels: {
+                    formatter: Math.round,
+                    font: {
+                    weight: 'bold',
+                    size: 25
+                    }
+                }
+            }
+            
         }
     }
     var myChart = new Chart(ctx, configBar);
@@ -163,9 +184,15 @@
             },
             responsive : true,
             maintainAspectRatio : false,
-            legend: {
-                    position : 'top',
-            },
+            plugins: {
+                datalabels: {
+                    formatter: Math.round,
+                    font: {
+                    weight: 'bold',
+                    size: 25
+                    }
+                }
+            }
         }
     }
     var myChart = new Chart(ctx, configBar);
@@ -209,7 +236,16 @@
                 }]
             },
             responsive : true,
-            maintainAspectRatio : false
+            maintainAspectRatio : false,
+            plugins: {
+                datalabels: {
+                    formatter: Math.round,
+                    font: {
+                    weight: 'bold',
+                    size: 25
+                    }
+                }
+            }
         }
     }
     var myChart = new Chart(ctx, configBar);
@@ -254,7 +290,16 @@
                 }]
             },
             responsive : true,
-            maintainAspectRatio : false
+            maintainAspectRatio : false,
+            plugins: {
+                datalabels: {
+                    formatter: Math.round,
+                    font: {
+                    weight: 'bold',
+                    size: 25
+                    }
+                }
+            }
         }
     }
     var myChart = new Chart(ctx, configBar);

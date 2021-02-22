@@ -1,5 +1,6 @@
 <div id="canvas-holder justify-content-center" style="height:530px; width:100%">
     <canvas id="chart-doughnut"></canvas>
+    <!-- <img src="data:image/png;base64,{{corr_matrix}}" width="100%"> -->
 </div>
 <!-- <button class="btn btn-primary" id="randomizeData">Randomize Data</button> -->
 <script>
@@ -39,7 +40,16 @@
             maintainAspectRatio : false,
             legend: {
                     position : 'bottom',
+            },
+            plugins: {
+                datalabels: {
+                    formatter: Math.round,
+                    font: {
+                    weight: 'bold',
+                    size: 25
+                    }
                 }
+            }
         }
     };
 
