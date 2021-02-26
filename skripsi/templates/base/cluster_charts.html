@@ -218,6 +218,7 @@
 
         // myChart.destroy();
         myChart = new Chart(ctx, configBar);
+        window.myChart.update();
         
 
         var totaldata = Object.values(total_data_cluster);
@@ -292,7 +293,7 @@
         
         // myChart.destroy();
         myChart = new Chart(ctx, configBar);
-        myChart.update();
+        window.myChart.update();
         
 
         var datapek = Object.keys(dataPekerjaan);
@@ -358,7 +359,7 @@
         
         // myChart.destroy();
         myChart = new Chart(ctx, configBar);
-        myChart.update();
+        window.myChart.update();
         
 
         var dataobj = Object.keys(dataObject);
@@ -422,7 +423,7 @@ $("button").click(function() {
         
         // myChart.destroy();
         myChart = new Chart(ctx, configBar);
-        myChart.update();
+        window.myChart.update();
         
 
         var dataten = Object.keys(dataTenor);

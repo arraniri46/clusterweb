@@ -264,17 +264,45 @@ def dashboard(request):
     # corrmat = plot_corr(df, ['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR'])
 
     # correlation_matrix = corr_matrix(df, ['KABUPATEN', 'PEKERJAAN', 'OBJECT', 'TENOR', 'OTR'])
-    # snspng = sns.heatmap(correlation_matrix, annot=True)
-    # fig = snspng.get_figure()
-    # #convert graph into dtring buffer and then we convert 64 bit code into image
-    # buffer = io.BytesIO()
-    # fig.savefig(buffer, format='png')
-    # buffer.seek(0)
-    # img_png = buffer.getvalue()
-    # string = base64.b64encode(img_png)
-    # string = string.decode('utf-8')
-    # # uri =  urllib.parse.quote(string)
-    # buffer.close()
+    dfplot = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+
+    snspng = sns.catplot(data=dfplot, x='OBJECT', y='KABUPATEN', hue='cluster', height=4.5, aspect=2)
+    buffer = io.BytesIO()
+    snspng.savefig(buffer, format='png')
+    buffer.seek(0)
+    img_png = buffer.getvalue()
+    string = base64.b64encode(img_png)
+    string = string.decode('utf-8')
+    buffer.close()
+
+    snspng2 = sns.catplot(data=dfplot, x='OBJECT', y='PEKERJAAN', hue='cluster', height=4.5, aspect=2)
+    buffer2 = io.BytesIO()
+    snspng2.savefig(buffer2, format='png')
+    buffer2.seek(0)
+    img_png2 = buffer2.getvalue()
+    string2 = base64.b64encode(img_png2)
+    string2 = string2.decode('utf-8')
+    buffer2.close()
+
+    
+    snspng3 = sns.catplot(data=dfplot, x='OBJECT', y='TENOR', hue='cluster', height=4, aspect=1.8)
+    buffer3 = io.BytesIO()
+    snspng3.savefig(buffer3, format='png')
+    buffer3.seek(0)
+    img_png3 = buffer3.getvalue()
+    string3 = base64.b64encode(img_png3)
+    string3 = string3.decode('utf-8')
+    buffer3.close()
+
+    
+    snspng4 = sns.catplot(data=dfplot, x='OBJECT', y='OTR', hue='cluster', height=4, aspect=1.8)
+    buffer4 = io.BytesIO()
+    snspng4.savefig(buffer4, format='png')
+    buffer4.seek(0)
+    img_png4 = buffer4.getvalue()
+    string4 = base64.b64encode(img_png4)
+    string4 = string4.decode('utf-8')
+    buffer4.close()
 
 
     
@@ -320,7 +348,10 @@ def dashboard(request):
         'obj_cluster' : obj_cluster,
         'ten_cluster' : ten_cluster,
         'total' : total_setiap_cluster,
-        # 'corr_matrix' : string,
+        'corr_matrix' : string,
+        'corr_matrix2' : string2,
+        'corr_matrix3' : string3,
+        'corr_matrix4' : string4,
        
     }
     return render(request, 'dashboard.html', context)

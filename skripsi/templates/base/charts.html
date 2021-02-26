@@ -3,17 +3,67 @@
         <div class="card mb-5 border-0 shadow">
             <div class="card-header">
                 <h6 class="mg-b-5">Data Grafik Clustering</h6>
-                <h4 class="tx-12 tx-color-03 mg-b-0">Persebaran Data Kelompok Cluster</h4>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Scatter Plot Terhadap Wilayah</h4>
             </div>
 
             <div class="card-body">
                 <div class="chart-container" style="width: 100%; height: 400px;">
-                    <canvas id="chart-1"></canvas>
+                    <img src="data:image/png;base64,{{corr_matrix | safe}}" width="100%">
                 </div>
             </div>
             <!-- <div class="card-footer"></div> -->
         </div>
     </div>
+
+    <div class="col-md-6 col-lg-6 mg-t-10">
+        <div class="card mb-5 border-0 shadow">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik Clustering</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Scatter Plot Terhadap Tenor Kredit</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container" style="width: 100%; height: 400px;">
+                    <img src="data:image/png;base64,{{corr_matrix3 | safe}}" width="100%">
+                </div>
+            </div>
+            <!-- <div class="card-footer"></div> -->
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 mg-t-10">
+        <div class="card mb-5 border-0 shadow">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik Clustering</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Scatter Plot Terhadap Harga Kendaraan</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container" style="width: 100%; height: 400px;">
+                    <img src="data:image/png;base64,{{corr_matrix4 | safe}}" width="100%">
+                </div>
+            </div>
+            <!-- <div class="card-footer"></div> -->
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 mg-t-10">
+        <div class="card mb-5 border-0 shadow">
+            <div class="card-header">
+                <h6 class="mg-b-5">Data Grafik Clustering</h6>
+                <h4 class="tx-12 tx-color-03 mg-b-0">Scatter Plot Terhadap Pekerjaan</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container" style="width: 100%; height: 400px;">
+                    <img src="data:image/png;base64,{{corr_matrix2 | safe}}" width="100%">
+                </div>
+            </div>
+            <!-- <div class="card-footer"></div> -->
+        </div>
+    </div>
+
+    <!-- BATAS SCATTER PLOT -->
 
     <div class="col-md-6 col-lg-6 mg-t-10">
         <div class="card mb-5 border-0 shadow">
@@ -81,6 +131,54 @@
         </div>
     </div> -->
 </div>
+
+<script>
+    var color = Chart.helpers.color;
+    var ctx = document.getElementById('chart-scatter-1').getContext('2d');
+    var a = {{dataCluster | safe}}; 
+    var b = {{dataTenor | safe}};
+
+    window.randomScalingFactor = function() {
+		return Math.floor(Math.random() * Math.floor(100));
+	};
+
+    function generateData() {
+			var data = [];
+			for (var i = 0; i < a.length ; i++) {
+				data.push({
+					x: randomScalingFactor(),
+					y: randomScalingFactor()
+				});
+			}
+			return data;
+		}
+		var scatterChartData = {
+			datasets: [{
+				label: 'My First dataset',
+				borderColor: window.chartColors.red,
+				backgroundColor: color(window.chartColors.red).alpha(0.8).rgbString(),
+				data: generateData(),
+			},
+            {
+				label: 'My Second dataset',
+				borderColor: window.chartColors.blue,
+				backgroundColor: color(window.chartColors.blue).alpha(0.8).rgbString(),
+				data: generateData(),
+                    
+			}]
+		};
+
+        var configScatter = {
+            data: scatterChartData,
+            options: {
+					title: {
+						display: true,
+						text: 'Chart.js Scatter Chart'
+					},
+				} 
+        };
+        var myChart = new Chart.Scatter(ctx, configScatter);
+</script>
     
 <script>
 
@@ -307,6 +405,7 @@
 
     //myChart.canvas.parentNode.style.height = '400px';
 </script>
+
 
 <!-- <script>
     var color = Chart.helpers.color;
