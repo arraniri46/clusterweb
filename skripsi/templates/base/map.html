@@ -104,11 +104,15 @@
     }
 
     function getColor2(d) {
-        return  d > 250  ? '#BD0026' :
-                d > 100  ? '#E31A1C' :
-                d > 50  ? '#FC4E2A' :
-                d > 25   ? '#FD8D3C' :
-                d > 0   ? '#FED976' :
+        return  d > 10000 ? '#1C0005' :
+                d > 5000 ? '#630014' :
+                d > 2500 ? '#8D001C' :
+                d > 500  ? '#BD0026' :
+                d > 250  ? '#E31A1C' :
+                d > 100  ? '#FC4E2A' :
+                d > 50   ? '#FF8730' :
+                d > 25   ? '#FFA86A' :
+                d > 0    ? '#FED976' :
                         'rgba(100, 10, 100, 0.2)';
     }
 
@@ -219,7 +223,7 @@
     legend_2.onAdd = function (map) {
 
         var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 25, 50, 100, 250],
+			grades = [0, 25, 50, 100, 250, 500, 2500, 5000, 10000],
 			labels = ['Intensitas Data'],
 			from, to;
 

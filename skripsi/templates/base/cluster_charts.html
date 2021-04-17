@@ -93,7 +93,9 @@
                 </h6>
                 <ul style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
                     <li>Mayoritas pekerjaan dengan total kemunculan berturut yaitu pada sektor <b><a id="datapek"></a></b>, <br></li>
-                    <li>Banyak membeli objek kendaraan berupa <b><a id="dataobj"></a></b>, <br></li>
+                    <li>Banyak membeli objek kendaraan berupa <b><a id="dataobj"></a></b>, 
+                        dengan rentang harga dari <b><a id="minharga"></a></b> sampai <b><a id="maxharga"></a></b><br>
+                    </li>
                     <li>Jangka waktu kredit selama <b><a id="dataten"></a></b> bulan, <br></li>
                     <li>Dan mayoritas berlokasi pada daerah <b><a id="datakab"></a></b>.</li>
                 </ul>
@@ -144,6 +146,7 @@
     var pekerjaan_cluster = {{pek_cluster | safe}};
     var object_cluster = {{obj_cluster | safe}};
     var tenor_cluster = {{ten_cluster | safe}};
+    var harga_cluster = {{dataHarga | safe}};
 
     // var dataten = Object.keys(datatenorKredit);
     // document.getElementById("dataten").innerHTML = dataten;
@@ -165,6 +168,7 @@
     $("button").click(function() {
         var fired_button = $(this).val()-1;
         var dataWilayah = kabupaten_cluster[fired_button];
+        var dataHarga = harga_cluster[fired_button];
 
         var total_data_cluster = total_data[fired_button];
 
@@ -229,6 +233,12 @@
 
         var datakab = Object.keys(dataWilayah);
         document.getElementById("datakab").innerHTML = datakab;
+
+        var minharga = dataHarga;
+        document.getElementById("minharga").innerHTML = minharga[0]
+
+        var maxharga = dataHarga;
+        document.getElementById("maxharga").innerHTML = maxharga[1]
 
 
     });

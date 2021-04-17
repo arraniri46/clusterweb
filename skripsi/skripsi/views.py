@@ -118,6 +118,7 @@ def dashboard(request):
     pekerjaan = df['PEKERJAAN'][~df['PEKERJAAN'].isin(['-'])]
     objectKendaraan = df['OBJECT']
     tenor = df['TENOR'].astype(str)
+    harga = df['OTR']
 
     #dataAkhir = pd.DataFrame(df['cluster'].value_counts())
     #labelPekerjaan = pd.DataFrame(data = df[['PEKERJAAN']].groupby(['PEKERJAAN']).sum().sort_values(by='PEKERJAAN', ascending=False)).reset_index()
@@ -151,6 +152,8 @@ def dashboard(request):
     listDataTenor = tenor['totalTenor'].tolist()
     # listDataTenor.sort()
 
+    
+
     # CLUSTERING
     input_cluster = int(request.session.get('jumlah_cluster'))
 
@@ -170,6 +173,14 @@ def dashboard(request):
     listCluster = sorted(listCluster)
     listDataCluster = dataCluster['totalCluster'].tolist()
     listDataCluster = sorted(listDataCluster)
+
+    #PARSING DATA HARGA
+    listDataHarga = []
+    for i in range(1,input_cluster+1):
+        listharga = df['OTR'].loc[df['cluster'] == i]
+        minharga, maxharga = (min(listharga), max(listharga))
+        x = [minharga, maxharga]
+        listDataHarga.append(x)
 
     # PARSING DATA CLUSTER MAP
     df_cluster_0 = df.loc[df['cluster'] == 0]
@@ -322,6 +333,7 @@ def dashboard(request):
         'dataTenor' : listDataTenor,
         'labelCluster' : listCluster,
         'dataCluster' : listDataCluster,
+        'dataHarga' : listDataHarga,
         'kolomKategori' : columnKategori,
         'df_cluster_0' : df_cluster_0,
         'df_cluster_1' : df_cluster_1,
@@ -422,7 +434,8 @@ def elbowGraph(request):
                 kproto = KPrototypes(n_clusters=num_clusters, init='random', verbose=2, n_jobs=-1, n_init=5, max_iter=5)
                 kproto.fit_predict(df, categorical=[0,1,2,3])
                 cost.append(kproto.cost_)
-
+            print(cost)
+            
 
             n_cluster = []
             for i in range(1,input_n_cluster+1):
