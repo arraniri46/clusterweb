@@ -80,11 +80,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-4 col-md-3">
-                                <div class="card shadow-lg">
+                                <div class="card">
                                     <div class="card-header bg-primary d-flex justify-content-between align-items-center">
                                         <h4 class="text-light">Total Vendor</h4>
                                     </div>
-                                    <div class="card-body shadow-lg" style="height: 400px;">
+                                    <div class="card-body" style="height: 400px;">
                                         <div class="d-flex justify-content-center mt-5 pt-5">
                                             <h1 class="display-1 text-dark font-weight-bold">{{ total | safe}}</h1>
                                         </div>
@@ -96,7 +96,7 @@
                                     <div class="row">
                                         {% for label, data in zipped_vendor %}
                                             <div class="col-sm-4 col-md-2">
-                                                <div class="card border-0 my-1 shadow-lg">
+                                                <div class="card border-0 my-1">
                                                     <div class="card-header bg-success d-flex justify-content-between align-items-center">
                                                         <h6 class="text-light font-weight-bold m-0">{{label}}</h6>
                                                     </div>
@@ -111,15 +111,15 @@
                                     </div>                                
                                 </div>
                             </div>
-                            <div class="col-lg-5 shadow my-5">
-                                <div class="card shadow">
+                            <div class="col-lg-5 my-5">
+                                <div class="card">
                                     <div class="card-header bg-danger d-flex justify-content-between align-items-center">
                                         <h4 class="text-light font-weight-bold m-0">Doughnut Chart</h4>
                                         <div class="dropdown">
                                             <button class="btn btn-link btn-sm dropdown-toogle" data-toogle="dropdown" aria-expanded="false" type="button">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
-                                            <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                                            <div class="dropdown-menu dropdown-menu-right animated--fade-in">
                                                 <p class="text-center dropdown-header">dropdown</p>
                                                 <a href="" class="dropdown-item">action</a>
                                             </div>
@@ -133,7 +133,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xl-7 my-5">
-                                <div class="card shadow">
+                                <div class="card">
                                         <h6 class="bg-info text-light py-2 pl-2">Data Grafik Clustering</h6>
                                         <div class="card-header ">
                                             <h4 class="font-weight-bold m-0">Persebaran Data Kelompok Cluster</h4>
