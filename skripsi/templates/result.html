@@ -1,75 +1,75 @@
 <style>
-
-  small{
+  small {
     display: block;
   }
-
 </style>
 
 <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-9 col-md-9 col-lg-9">
-            <div class="card border-0 shadow-sm">
-              <div class="card-header d-flex flex-column flex-sm-row align-items-sm-start justify-content-sm-between">
-                <div>
-                  <h6 class="">Map</h6>
-                  <h4 class="tx-12 tx-color-03 mg-b-0">Peta Sebaran</h4>
-                </div>
-                  <div class="input-group col-sm-4 mt-sm-2">
-                      <!-- <select name="" class="form-control select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
+  <div class="row">
+    <div class="col-sm-8 col-md-8 col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div
+          class="card-header d-flex flex-column flex-sm-row align-items-sm-start justify-content-sm-between"
+        >
+          <div>
+            <h6 class="">Map</h6>
+            <h4 class="tx-12 tx-color-03 mg-b-0">Peta Sebaran</h4>
+          </div>
+          <div class="input-group col-sm-4 mt-sm-2">
+            <!-- <select name="" class="form-control select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
                           <option value="" data-select2-id="0">-Properties-</option>                          
                           {% for kolom in kolomKategori %}
                             <option value="{{ kolom }}">{{ kolom }}</option>
                           {% endfor %}                            
                       </select> -->
-                  </div>                 
-              </div>
-              <!-- card-header -->
-
-              <div class="card-body pd-lg-25">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="container" id="map">
-                        {% include 'base/map.html' %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- card-body -->
-
-              <!-- <div class="card-footer"></div> -->
-
-            </div><!-- card -->
+          </div>
         </div>
-          <!-- CHART BUNDAR -->
-        <div class="col-sm-2 col-md-2 col-lg-3 mg-t-10 mg-lg-t-0">
-            <div class="card border-0 shadow-sm">
-              <div class="card-header">
-                <h4 class="mg-b-0">Rasio Persebaran</h4>
-              </div><!-- card-header -->
-              <div class="card-body pd-lg-25" style="position: relative;">
-                {% include 'base/doughnut_chart.html' %}
+        <!-- card-header -->
+
+        <div class="card-body pd-lg-25">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="container" id="map">
+                {% include 'base/map.html' %}
               </div>
-              <!-- <div class="card-footer pd-20"></div> -->
-              <!-- card-footer -->
-            </div><!-- card -->
+            </div>
+          </div>
         </div>
-        <!-- END CHART BUNDAR --> 
-      </div>     
+        <!-- card-body -->
+
+        <!-- <div class="card-footer"></div> -->
+      </div>
+      <!-- card -->
+    </div>
+    <!-- CHART BUNDAR -->
+    <div class="col-sm-2 col-md-2 col-lg-3 mg-t-10 mg-lg-t-0">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header">
+          <h4 class="mg-b-0">Rasio Persebaran</h4>
+        </div>
+        <!-- card-header -->
+        <div class="card-body pd-lg-25" style="position: relative">
+          {% include 'base/doughnut_chart.html' %}
+        </div>
+        <!-- <div class="card-footer pd-20"></div> -->
+        <!-- card-footer -->
+      </div>
+      <!-- card -->
+    </div>
+    <!-- END CHART BUNDAR -->
+  </div>
 </div>
 
 {% include 'base/cluster_charts.html' %}
 
-<div class="container-fluid" style="margin-top: 0px;">
-  <div class="table" style="padding-top: 50px;">
+<div class="container-fluid" style="margin-top: 0px">
+  <div class="table" style="padding-top: 50px">
     {% include 'base/table.html' %}
   </div>
 </div>
 
-<div class="clear" style="clear: left; "></div>
+<div class="clear" style="clear: left"></div>
 
-<div class="container-fluid" style="margin-top: 50px;">
-  
+<div class="container-fluid" style="margin-top: 50px">
   {% include 'base/charts.html' %}
-
 </div>
